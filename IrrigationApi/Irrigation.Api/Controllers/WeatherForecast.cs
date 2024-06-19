@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace IrrigationApi.Controllers;
+namespace Irrigation.Api.Controllers;
 
 [ApiController]
 [Route("v1/weather")]

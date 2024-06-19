@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrigation.Api", "Irrigation.Api\Irrigation.Api.csproj", "{58D78D5B-1DF2-4604-BC45-C42D2A7BB6A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrigation.Core", "Irrigation.Core\Irrigation.Core.csproj", "{818F9547-1D5D-40D4-AFC7-284477FBF065}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrigation.Infra", "Irrigation.Infra\Irrigation.Infra.csproj", "{8B2366F4-5E93-4D59-8906-E2AFE6AC5157}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrigation.Tests", "Irrigation.Tests\Irrigation.Tests.csproj", "{FB236C73-2BAF-4F0C-B528-D15C91BE4315}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58D78D5B-1DF2-4604-BC45-C42D2A7BB6A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58D78D5B-1DF2-4604-BC45-C42D2A7BB6A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58D78D5B-1DF2-4604-BC45-C42D2A7BB6A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58D78D5B-1DF2-4604-BC45-C42D2A7BB6A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{818F9547-1D5D-40D4-AFC7-284477FBF065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{818F9547-1D5D-40D4-AFC7-284477FBF065}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{818F9547-1D5D-40D4-AFC7-284477FBF065}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{818F9547-1D5D-40D4-AFC7-284477FBF065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B2366F4-5E93-4D59-8906-E2AFE6AC5157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B2366F4-5E93-4D59-8906-E2AFE6AC5157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B2366F4-5E93-4D59-8906-E2AFE6AC5157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B2366F4-5E93-4D59-8906-E2AFE6AC5157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB236C73-2BAF-4F0C-B528-D15C91BE4315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB236C73-2BAF-4F0C-B528-D15C91BE4315}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB236C73-2BAF-4F0C-B528-D15C91BE4315}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB236C73-2BAF-4F0C-B528-D15C91BE4315}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
