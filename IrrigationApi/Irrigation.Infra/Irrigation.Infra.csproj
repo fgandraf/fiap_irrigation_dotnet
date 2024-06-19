@@ -16,4 +16,8 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0-preview.5.24306.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Irrigation.Core\Irrigation.Core.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -3,11 +3,15 @@
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Nullable>disable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="SecureIdentity" Version="1.0.4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Models\Role.cs" />
     </ItemGroup>
 
 </Project>
