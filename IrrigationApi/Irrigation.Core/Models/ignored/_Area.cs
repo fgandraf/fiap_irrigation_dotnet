@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Irrigation.Core.Models;
 
+[Table("tbl_area")]
 public class _Area
 {
     
