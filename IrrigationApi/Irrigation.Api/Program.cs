@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddConfigurationKeys();
 builder.AddDatabase();
+builder.AddRepositoryServices();
 builder.AddJwtAuthentication();
 builder.AddAuthorizationPolicies();
 builder.AddSwaggerConfigurations();
