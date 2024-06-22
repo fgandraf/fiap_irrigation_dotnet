@@ -23,7 +23,7 @@ public class RoleMap : IEntityTypeConfiguration<Role>
             .IsRequired(false)
             .HasColumnName("name")
             .HasColumnType("VARCHAR")
-            .HasMaxLength(80);
+            .HasMaxLength(30);
     }
     
 }

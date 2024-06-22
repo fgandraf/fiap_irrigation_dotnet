@@ -21,20 +21,14 @@ public class AreaMap: IEntityTypeConfiguration<Area>
         //// Properties
         builder.Property(x => x.Description)
             .IsRequired(false)
-            .HasColumnName("description")
-            .HasColumnType("NVARCHAR")
-            .HasMaxLength(100);
-           
+            .HasColumnName("description");
+
         builder.Property(x => x.Location)
             .IsRequired(false)
-            .HasColumnName("location")
-            .HasColumnType("VARCHAR")
-            .HasMaxLength(11);
-           
+            .HasColumnName("location");
+
         builder.Property(x => x.Size)
             .IsRequired(false)
-            .HasColumnName("area_size")
-            .HasColumnType("VARCHAR")
-            .HasMaxLength(11);
+            .HasColumnName("area_size");
     }
 }

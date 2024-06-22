@@ -20,18 +20,17 @@ public class NotificationMap: IEntityTypeConfiguration<Notification>
         
         //// Properties
         builder.Property(x => x.Description)
-            .IsRequired()
-            .HasColumnName("description")
-            .HasColumnType("NVARCHAR")
-            .HasMaxLength(100);
+            .IsRequired(false)
+            .HasColumnName("description");
         
         builder.Property(x => x.Timestamp)
-            .IsRequired(false)
+            .IsRequired()
             .HasColumnName("timestamp");
         
         // Notification -> Sensor
         builder.HasOne(x => x.Sensor)
             .WithMany(x => x.Notifications)
+            .HasForeignKey("sensor_id")
             .HasConstraintName("FK_Notification_Sensor");
     }
 }

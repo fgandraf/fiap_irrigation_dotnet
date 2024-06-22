@@ -20,11 +20,11 @@ public class ScheduleMap: IEntityTypeConfiguration<Schedule>
         
         //// Properties
         builder.Property(x => x.StartTime)
-            .IsRequired(false)
+            .IsRequired()
             .HasColumnName("start_time");
         
         builder.Property(x => x.EndTime)
-            .IsRequired(false)
+            .IsRequired()
             .HasColumnName("end_time");
     }
 }

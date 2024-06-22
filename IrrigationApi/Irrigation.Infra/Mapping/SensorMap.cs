@@ -21,20 +21,17 @@ public class SensorMap: IEntityTypeConfiguration<Sensor>
             //// Properties
             builder.Property(x => x.Type)
                 .IsRequired(false)
-                .HasColumnName("type")
-                .HasColumnType("NVARCHAR")
-                .HasMaxLength(100);
-            
+                .HasColumnName("type");
+
             builder.Property(x => x.Location)
                 .IsRequired(false)
-                .HasColumnName("location")
-                .HasColumnType("VARCHAR")
-                .HasMaxLength(11);
+                .HasColumnName("location");
             
             //// Relation
             // Area -> Sensor
             builder.HasOne(x => x.Area)
                 .WithMany(x => x.Sensors)
+                .HasForeignKey("area_id")
                 .HasConstraintName("FK_Area_Sensor");
     }
 }

@@ -20,15 +20,15 @@ public class WeatherMap : IEntityTypeConfiguration<Weather>
          
          //// Properties
          builder.Property(x => x.Timestamp)
-             .IsRequired(false)
+             .IsRequired()
              .HasColumnName("timestamp");
 
          builder.Property(x => x.Temperature)
-             .IsRequired(false)
+             .IsRequired()
              .HasColumnName("temperature");
 
          builder.Property(x => x.Humidity)
-             .IsRequired(false)
+             .IsRequired()
              .HasColumnName("humidity");
 
          builder.Property(x => x.Description)
@@ -39,6 +39,7 @@ public class WeatherMap : IEntityTypeConfiguration<Weather>
          // Weather -> Sensor
          builder.HasOne(x => x.Sensor)
              .WithMany(x => x.Weathers)
+             .HasForeignKey("sensor_id")
              .HasConstraintName("FK_Weather_Sensor");
     }
 }
