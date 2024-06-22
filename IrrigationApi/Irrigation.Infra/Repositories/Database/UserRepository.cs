@@ -1,35 +1,21 @@
-using Irrigation.Core.Contracts;
+using Irrigation.Core.Contracts.Repositories;
+using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Irrigation.Infra.Repositories.Database;
 
-public class UserRepository : IUserRepository
+public class UserRepository(IrrigationDataContext context) : IUserRepository
 {
-    private IrrigationDataContext _context;
-
-    public UserRepository(IrrigationDataContext context)
-        => _context = context;
-    
-    
-    
-    public async Task<List<UserViewModel>>  GetAllAsync()
+    public async Task<User> GetUserByLogin(UserLoginViewModel model)
     {
-        var users = await _context
+        var user = await context
             .Users
             .AsNoTracking()
-            .Include(roles => roles.Roles)
-            .Select(user => new UserViewModel
-            (
-                user.Id,
-                user.Name,
-                user.Email,
-                user.Active,
-                user.Roles.Select(x => x.Id).ToList()
-            ))
-            .ToListAsync();
+            .Include(x => x.Roles)
+            .FirstOrDefaultAsync(x => x.Email == model.Email);
         
-        return users;
+        return user;
     }
 }
