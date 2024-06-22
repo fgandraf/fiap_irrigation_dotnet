@@ -20,7 +20,7 @@ public class RoleMap : IEntityTypeConfiguration<Role>
         
         //// Properties
         builder.Property(x => x.Name)
-            .IsRequired()
+            .IsRequired(false)
             .HasColumnName("name")
             .HasColumnType("VARCHAR")
             .HasMaxLength(80);
