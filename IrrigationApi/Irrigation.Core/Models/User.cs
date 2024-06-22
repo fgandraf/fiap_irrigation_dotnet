@@ -1,8 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Irrigation.Core.Models;
 
-[Table("tbl_user")]
 public class User
 {
     public long Id { get; set; }
