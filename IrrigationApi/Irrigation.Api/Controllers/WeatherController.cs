@@ -4,10 +4,8 @@ namespace Irrigation.Api.Controllers;
 
 [ApiController]
 [Route("v1/weather")]
-public class WeatherForecast: ControllerBase
+public class WeatherController : ControllerBase
 {
-
     [HttpGet]
-    public string GetArea() => "Ok Weather";
-    
+    public string HelloWorld() => "Hello World";
 }
