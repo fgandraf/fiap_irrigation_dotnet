@@ -63,7 +63,14 @@ public static class BuilderExtensions
     public static void AddRepositoryServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IrrigationDataContext>();
+        
+        builder.Services.AddScoped<IAreaRepository, AreaRepository>();
+        builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+        builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+        builder.Services.AddScoped<ISensorRepository, SensorRepository>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IWeatherRepository, WeatherRepository>();
+        
         builder.Services.AddScoped<ITokenService, TokenService>();
     }
 
