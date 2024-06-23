@@ -1,7 +1,7 @@
 namespace Irrigation.Core.ViewModels;
 
 public record UserViewModel(
-    long Id,
+    int Id,
     string Name,
     string Email,
     bool Active,

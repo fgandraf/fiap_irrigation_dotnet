@@ -2,9 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Irrigation.Api.Services;
 using Irrigation.Core;
-using Irrigation.Core.Contracts.Handlers;
-using Irrigation.Core.Contracts.Repositories;
-using Irrigation.Infra.Handlers;
+using Irrigation.Core.Contracts;
 using Irrigation.Infra.Data;
 using Irrigation.Infra.Repositories.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,10 +63,8 @@ public static class BuilderExtensions
     public static void AddRepositoryServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IrrigationDataContext>();
-        builder.Services.AddSingleton<TokenService>();
-        
         builder.Services.AddScoped<IUserRepository, UserRepository>();
-        builder.Services.AddScoped<IUserHandler, UserHandler>();
+        builder.Services.AddScoped<ITokenService, TokenService>();
     }
 
 

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Irrigation.Api.Migrations
 {
     [DbContext(typeof(IrrigationDataContext))]
-    [Migration("20240622182259_Initial")]
+    [Migration("20240623161044_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -27,12 +27,12 @@ namespace Irrigation.Api.Migrations
 
             modelBuilder.Entity("Irrigation.Core.Models.Area", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasColumnName("area_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
@@ -53,12 +53,12 @@ namespace Irrigation.Api.Migrations
 
             modelBuilder.Entity("Irrigation.Core.Models.Notification", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasColumnName("notification_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
@@ -68,8 +68,8 @@ namespace Irrigation.Api.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("timestamp");
 
-                    b.Property<long?>("sensor_id")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("sensor_id")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -99,12 +99,12 @@ namespace Irrigation.Api.Migrations
 
             modelBuilder.Entity("Irrigation.Core.Models.Schedule", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasColumnName("schedule_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2")
@@ -121,12 +121,12 @@ namespace Irrigation.Api.Migrations
 
             modelBuilder.Entity("Irrigation.Core.Models.Sensor", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasColumnName("sensor_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)")
@@ -136,8 +136,8 @@ namespace Irrigation.Api.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("type");
 
-                    b.Property<long?>("area_id")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("area_id")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -148,12 +148,12 @@ namespace Irrigation.Api.Migrations
 
             modelBuilder.Entity("Irrigation.Core.Models.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasColumnName("user_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Active")
                         .HasColumnType("BIT")
@@ -188,12 +188,12 @@ namespace Irrigation.Api.Migrations
 
             modelBuilder.Entity("Irrigation.Core.Models.Weather", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("int")
                         .HasColumnName("weather_id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
@@ -211,8 +211,8 @@ namespace Irrigation.Api.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("timestamp");
 
-                    b.Property<long?>("sensor_id")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("sensor_id")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -226,8 +226,8 @@ namespace Irrigation.Api.Migrations
                     b.Property<int>("role_id")
                         .HasColumnType("int");
 
-                    b.Property<long>("user_id")
-                        .HasColumnType("bigint");
+                    b.Property<int>("user_id")
+                        .HasColumnType("int");
 
                     b.HasKey("role_id", "user_id");
 

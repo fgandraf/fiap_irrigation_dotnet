@@ -4,7 +4,7 @@ namespace Irrigation.Core.Models;
 
 public class Area
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string Description { get; set; }
     public string Location { get; set; }
     public string Size { get; set; }

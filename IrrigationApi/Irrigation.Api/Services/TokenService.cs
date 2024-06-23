@@ -2,12 +2,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Irrigation.Core;
+using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Irrigation.Api.Services;
 
-public class TokenService
+public class TokenService : ITokenService
 {
     public string GenerateToken(User user)
     {

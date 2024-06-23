@@ -31,7 +31,7 @@ public static class WebApplicationExtensions
                 PasswordHash = PasswordHasher.Hash("admin"),
                 Roles =
                 [
-                    context.Roles.FirstOrDefault(x => x.Name == "Admin")
+                    context.Roles.FirstOrDefault(x => x.Name == "admin")
                 ]
             };
             

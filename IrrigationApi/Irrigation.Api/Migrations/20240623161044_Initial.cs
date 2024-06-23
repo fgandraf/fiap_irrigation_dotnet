@@ -15,7 +15,7 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_area",
                 columns: table => new
                 {
-                    area_id = table.Column<long>(type: "bigint", nullable: false)
+                    area_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     location = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -43,7 +43,7 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_schedule",
                 columns: table => new
                 {
-                    schedule_id = table.Column<long>(type: "bigint", nullable: false)
+                    schedule_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     start_time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     end_time = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -57,7 +57,7 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_user",
                 columns: table => new
                 {
-                    user_id = table.Column<long>(type: "bigint", nullable: false)
+                    user_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
                     email = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
@@ -73,11 +73,11 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_sensor",
                 columns: table => new
                 {
-                    sensor_id = table.Column<long>(type: "bigint", nullable: false)
+                    sensor_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     type = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    area_id = table.Column<long>(type: "bigint", nullable: true)
+                    area_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,7 +94,7 @@ namespace Irrigation.Api.Migrations
                 columns: table => new
                 {
                     role_id = table.Column<int>(type: "int", nullable: false),
-                    user_id = table.Column<long>(type: "bigint", nullable: false)
+                    user_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,11 +117,11 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_notification",
                 columns: table => new
                 {
-                    notification_id = table.Column<long>(type: "bigint", nullable: false)
+                    notification_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    sensor_id = table.Column<long>(type: "bigint", nullable: true)
+                    sensor_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,13 +137,13 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_weather",
                 columns: table => new
                 {
-                    weather_id = table.Column<long>(type: "bigint", nullable: false)
+                    weather_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     temperature = table.Column<int>(type: "int", nullable: false),
                     humidity = table.Column<int>(type: "int", nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    sensor_id = table.Column<long>(type: "bigint", nullable: true)
+                    sensor_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
