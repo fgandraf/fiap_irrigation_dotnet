@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Irrigation.Core.Models;
 
 namespace Irrigation.Core.Contracts;

@@ -1,21 +1,17 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Irrigation.Core.ViewModels;
+namespace Irrigation.Core.ViewModels.Create;
 
-public record UserUpdateInfoInput
+public record UserCreate
 {
-    [Required(ErrorMessage = "O campo 'Id' é obrigatório.")]
-    [DefaultValue("")]
-    public int Id { get; set; }
-    
     [Required(ErrorMessage = "User name is required!")]
     [DefaultValue("")]
     public string Name { get; set; }
     
     [Required(ErrorMessage = "Email is required!")]
-    [EmailAddress]
     [DefaultValue("")]
+    [EmailAddress]
     public string Email{ get; set; }
     
     [Required(ErrorMessage = "Password is required!")]

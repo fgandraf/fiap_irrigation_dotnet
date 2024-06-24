@@ -2,6 +2,7 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +33,7 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
             .ToListAsync();
 
         if (weathers.Count == 0)
-            return OperationResult<dynamic>.FailureResult("Nenhum clima cadastrado!");
+            return OperationResult<dynamic>.FailureResult("No weather registered!");
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -63,7 +64,7 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
             .FirstOrDefaultAsync();
         
         if (weather is null)
-            return OperationResult<WeatherViewModel>.FailureResult($"Usuário '{id}' não encontrado!");
+            return OperationResult<WeatherViewModel>.FailureResult($"Weather '{id}' not found!");
         
         return OperationResult<WeatherViewModel>.SuccessResult(weather);
     }
@@ -81,7 +82,7 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
         
         context.Weathers.Add(weather);
         var id = await context.SaveChangesAsync();
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Não foi possível inserir o clima!");
+        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add weather!");
     }
     
     public async Task<OperationResult> UpdateAsync(WeatherViewModel model)
@@ -96,7 +97,7 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
         context.Weathers.Update(weather);
         
         var rowsAffected = await context.SaveChangesAsync();
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar o clima!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter weather!");
     }
 
     public async Task<OperationResult> DeleteAsync(int id)
@@ -105,6 +106,6 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
         context.Weathers.Remove(weather);
         
         var rowsAffected = await context.SaveChangesAsync();
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível excluir o clima!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to delete weather!");
     }
 }

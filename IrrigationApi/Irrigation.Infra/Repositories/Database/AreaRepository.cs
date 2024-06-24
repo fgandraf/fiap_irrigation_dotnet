@@ -2,6 +2,7 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +32,7 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
             .ToListAsync();
 
         if (areas.Count == 0)
-            return OperationResult<dynamic>.FailureResult("Nenhuma área cadastrada!");
+            return OperationResult<dynamic>.FailureResult("No areas registered!");
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -61,7 +62,7 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
             .FirstOrDefaultAsync();
         
         if (area is null)
-            return OperationResult<AreaViewModel>.FailureResult($"Área '{id}' não encontrada!");
+            return OperationResult<AreaViewModel>.FailureResult($"Area '{id}' not found!");
         
         return OperationResult<AreaViewModel>.SuccessResult(area);
     }
@@ -79,7 +80,7 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
         context.Areas.Add(area);
         var id = await context.SaveChangesAsync();
         
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Não foi possível inserir a área!");
+        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add area!");
     }
     
     public async Task<OperationResult> UpdateAsync(AreaViewModel model)
@@ -93,7 +94,7 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
         context.Areas.Update(area);
         var rowsAffected = await context.SaveChangesAsync();
         
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar a área!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter area!");
     }
 
     public async Task<OperationResult> DeleteAsync(int id)
@@ -103,6 +104,6 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
         context.Areas.Remove(area);
         var rowsAffected = await context.SaveChangesAsync();
         
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível excluir a área!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to delete area!");
     }
 }

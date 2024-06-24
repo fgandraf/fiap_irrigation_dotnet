@@ -1,4 +1,4 @@
-using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.View;
 
 namespace Irrigation.Core.Contracts;
 

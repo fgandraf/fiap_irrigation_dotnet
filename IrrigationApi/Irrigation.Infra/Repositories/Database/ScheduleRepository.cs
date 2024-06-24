@@ -2,6 +2,7 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,7 +29,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
             .ToListAsync();
 
         if (schedules.Count == 0)
-            return OperationResult<dynamic>.FailureResult("Nenhum agendamento cadastrado!");
+            return OperationResult<dynamic>.FailureResult("No schedules registered!");
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -55,7 +56,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
             .FirstOrDefaultAsync();
         
         if (schedule is null)
-            return OperationResult<ScheduleViewModel>.FailureResult($"Agendamento '{id}' não encontrado!");
+            return OperationResult<ScheduleViewModel>.FailureResult($"Schedule '{id}' not found!");
         
         return OperationResult<ScheduleViewModel>.SuccessResult(schedule);
     }
@@ -71,7 +72,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
         context.Schedules.Add(schedule);
         var id = await context.SaveChangesAsync();
         
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Não foi possível inserir o agendamento!");
+        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add schedule!");
     }
     
     public async Task<OperationResult> UpdateAsync(ScheduleViewModel model)
@@ -83,7 +84,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
         context.Schedules.Update(schedule);
         var rowsAffected = await context.SaveChangesAsync();
         
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar o agendamento!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter schedule!");
     }
 
     public async Task<OperationResult> DeleteAsync(int id)
@@ -93,7 +94,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
         context.Schedules.Remove(schedule);
         var rowsAffected = await context.SaveChangesAsync();
         
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível excluir o agendamento!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to delete schedule!");
     }
     
 }

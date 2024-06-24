@@ -2,6 +2,7 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +31,7 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
             .ToListAsync();
 
         if (notifications.Count == 0)
-            return OperationResult<dynamic>.FailureResult("Nenhuma notificação cadastrada!");
+            return OperationResult<dynamic>.FailureResult("No notifications registered!");
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -59,7 +60,7 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
             .FirstOrDefaultAsync();
         
         if (notification is null)
-            return OperationResult<NotificationViewModel>.FailureResult($"Notificação '{id}' não encontrada!");
+            return OperationResult<NotificationViewModel>.FailureResult($"Notification '{id}' not found!");
         
         return OperationResult<NotificationViewModel>.SuccessResult(notification);
     }
@@ -76,7 +77,7 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
         context.Notifications.Add(notification);
         var id = await context.SaveChangesAsync();
         
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Não foi possível inserir a notificação!");
+        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add notification!");
     }
     
     public async Task<OperationResult> UpdateAsync(NotificationViewModel model)
@@ -89,7 +90,7 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
         context.Notifications.Update(notification);
         var rowsAffected = await context.SaveChangesAsync();
         
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar a notificação!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter notification!");
     }
 
     public async Task<OperationResult> DeleteAsync(int id)
@@ -99,6 +100,6 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
         context.Notifications.Remove(notification);
         var rowsAffected = await context.SaveChangesAsync();
         
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível excluir a notificação!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to delete notification!");
     }
 }

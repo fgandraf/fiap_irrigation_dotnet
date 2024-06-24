@@ -2,6 +2,7 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +35,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
             .ToListAsync();
 
         if (sensors.Count == 0)
-            return OperationResult<dynamic>.FailureResult("Nenhum sensor cadastrado!");
+            return OperationResult<dynamic>.FailureResult("No sensors registered!");
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -67,7 +68,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
             .FirstOrDefaultAsync();
         
         if (sensor is null)
-            return OperationResult<SensorViewModel>.FailureResult($"Sensor '{id}' não encontrado!");
+            return OperationResult<SensorViewModel>.FailureResult($"Sensor '{id}' not found!");
         
         return OperationResult<SensorViewModel>.SuccessResult(sensor);
     }
@@ -86,7 +87,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
         context.Sensors.Add(sensor);
         var id = await context.SaveChangesAsync();
         
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Não foi possível inserir o sensor!");
+        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add sensor!");
     }
     
     public async Task<OperationResult> UpdateAsync(SensorViewModel model)
@@ -101,7 +102,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
         context.Sensors.Update(sensor);
         var rowsAffected = await context.SaveChangesAsync();
         
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar o sensor!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter sensor!");
     }
 
     public async Task<OperationResult> DeleteAsync(int id)
@@ -111,6 +112,6 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
         context.Sensors.Remove(sensor);
         var rowsAffected = await context.SaveChangesAsync();
         
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível excluir o sensor!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to delete sensor!");
     }
 }

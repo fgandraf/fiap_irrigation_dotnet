@@ -2,6 +2,9 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
+using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using SecureIdentity.Password;
@@ -20,9 +23,9 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .FirstOrDefaultAsync(x => x.Email == model.Email);
         
         if (user is null || !user.Active)
-            return OperationResult<User>.FailureResult($"Usuário '{model.Email}' não encontrado ou não está ativo!");
+            return OperationResult<User>.FailureResult($"User '{model.Email}' not found or not active!");
         if (!PasswordHasher.Verify(user!.PasswordHash, model.Password))
-            return OperationResult<User>.FailureResult("Usuário ou senha inválida!");
+            return OperationResult<User>.FailureResult("User name or password invalid!");
 
         return OperationResult<User>.SuccessResult(user);
     }
@@ -49,7 +52,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .ToListAsync();
 
         if (users.Count == 0)
-            return OperationResult<dynamic>.FailureResult("Nenhum usuário cadastrado!");
+            return OperationResult<dynamic>.FailureResult("No users registered!");
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -78,7 +81,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .FirstOrDefaultAsync();
         
         if (user is null)
-            return OperationResult<UserViewModel>.FailureResult($"Usuário '{address}' não encontrado!");
+            return OperationResult<UserViewModel>.FailureResult($"User '{address}' not found!");
         
         return OperationResult<UserViewModel>.SuccessResult(user);
     }
@@ -101,12 +104,12 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .FirstOrDefaultAsync();
         
         if (user is null)
-            return OperationResult<UserViewModel>.FailureResult($"Usuário '{id}' não encontrado!");
+            return OperationResult<UserViewModel>.FailureResult($"User '{id}' not found!");
         
         return OperationResult<UserViewModel>.SuccessResult(user);
     }
 
-    public async Task<OperationResult<int>> InsertAsync(UserRegisterInput model)
+    public async Task<OperationResult<int>> InsertAsync(UserCreate model)
     {
         var userRole = context.Roles.FirstOrDefault(x => x.Id == 2);
         var user = new User
@@ -122,10 +125,10 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
         };
         context.Users.Add(user);
         var id = await context.SaveChangesAsync();
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Não foi possível inserir o usuário!");
+        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add user!");
     }
 
-    public async Task<OperationResult> UpdateAsync(UserUpdateInfoInput model)
+    public async Task<OperationResult> UpdateAsync(UserUpdateInfo model)
     {
         var user = await context.Users.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
         user.Name = model.Name;
@@ -134,7 +137,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
         context.Users.Update(user);
         
         var rowsAffected = await context.SaveChangesAsync();
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar o usuário!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter user!");
     }
     
     public async Task<OperationResult> ActivateAsync(int id)
@@ -144,7 +147,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
         context.Users.Update(user);
         
         var rowsAffected = await context.SaveChangesAsync();
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar o estado do usuário!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter user state!");
     }
     
     public async Task<OperationResult> DeactivateAsync(int id)
@@ -154,7 +157,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
         context.Users.Update(user);
         
         var rowsAffected = await context.SaveChangesAsync();
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar o estado do usuário!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter user state!");
     }
 
     public async Task<OperationResult> ChangePermission(int userId, int permissionId)
@@ -172,6 +175,6 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
         context.Users.Update(user);
         
         var rowsAffected = await context.SaveChangesAsync();
-        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Não foi possível alterar as permissões do usuário!");
+        return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter user permissions!");
     }
 }
