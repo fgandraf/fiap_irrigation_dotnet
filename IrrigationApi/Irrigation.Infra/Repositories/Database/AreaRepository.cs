@@ -19,7 +19,7 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
             .Areas
             .AsNoTracking()
             .Include(x => x.Sensors)
-            .Select(area => new AreaViewModel
+            .Select(area => new AreaView
                 (
                     area.Id,
                     area.Description,
@@ -33,7 +33,7 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
             .ToListAsync();
 
         if (areas.Count == 0)
-            return OperationResult<dynamic>.FailureResult("No areas registered!");
+            return OperationResult<dynamic>.FailureResult();
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -44,14 +44,14 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
         });
     }
     
-    public async Task<OperationResult<AreaViewModel>> GetByIdAsync(int id)
+    public async Task<OperationResult<AreaView>> GetByIdAsync(int id)
     {
         var area = await context
             .Areas
             .AsNoTracking()
             .Where(x => x.Id == id)
             .Include(y => y.Sensors)
-            .Select(area => new AreaViewModel
+            .Select(area => new AreaView
                 (
                     area.Id,
                     area.Description,
@@ -63,9 +63,9 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
             .FirstOrDefaultAsync();
         
         if (area is null)
-            return OperationResult<AreaViewModel>.FailureResult($"Area '{id}' not found!");
+            return OperationResult<AreaView>.FailureResult();
         
-        return OperationResult<AreaViewModel>.SuccessResult(area);
+        return OperationResult<AreaView>.SuccessResult(area);
     }
     
     public async Task<OperationResult<int>> InsertAsync(AreaCreate model)

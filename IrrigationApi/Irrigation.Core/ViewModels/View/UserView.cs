@@ -1,6 +1,6 @@
 namespace Irrigation.Core.ViewModels.View;
 
-public record UserViewModel(
+public record UserView(
     int Id,
     string Name,
     string Email,

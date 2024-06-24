@@ -19,7 +19,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
         var schedules = await context
             .Schedules
             .AsNoTracking()
-            .Select(schedule => new ScheduleViewModel
+            .Select(schedule => new ScheduleView
                 (
                     schedule.Id,
                     schedule.StartTime,
@@ -31,7 +31,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
             .ToListAsync();
 
         if (schedules.Count == 0)
-            return OperationResult<dynamic>.FailureResult("No schedules registered!");
+            return OperationResult<dynamic>.FailureResult();
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -42,13 +42,13 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
         });
     }
     
-    public async Task<OperationResult<ScheduleViewModel>> GetByIdAsync(int id)
+    public async Task<OperationResult<ScheduleView>> GetByIdAsync(int id)
     {
         var schedule = await context
             .Schedules
             .AsNoTracking()
             .Where(x => x.Id == id)
-            .Select(schedule => new ScheduleViewModel
+            .Select(schedule => new ScheduleView
                 (
                     schedule.Id,
                     schedule.StartTime,
@@ -58,9 +58,9 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
             .FirstOrDefaultAsync();
         
         if (schedule is null)
-            return OperationResult<ScheduleViewModel>.FailureResult($"Schedule '{id}' not found!");
+            return OperationResult<ScheduleView>.FailureResult();
         
-        return OperationResult<ScheduleViewModel>.SuccessResult(schedule);
+        return OperationResult<ScheduleView>.SuccessResult(schedule);
     }
     
     public async Task<OperationResult<int>> InsertAsync(ScheduleCreate model)

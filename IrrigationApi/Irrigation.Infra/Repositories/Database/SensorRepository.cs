@@ -22,7 +22,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
             .Include(x => x.Area)
             .Include(x => x.Weathers)
             .Include(x => x.Notifications)
-            .Select(sensor => new SensorViewModel
+            .Select(sensor => new SensorView
                 (
                     sensor.Id,
                     sensor.Type,
@@ -37,7 +37,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
             .ToListAsync();
 
         if (sensors.Count == 0)
-            return OperationResult<dynamic>.FailureResult("No sensors registered!");
+            return OperationResult<dynamic>.FailureResult();
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -48,7 +48,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
         });
     }
     
-    public async Task<OperationResult<SensorViewModel>> GetByIdAsync(int id)
+    public async Task<OperationResult<SensorView>> GetByIdAsync(int id)
     {
         var sensor = await context
             .Sensors
@@ -57,7 +57,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
             .Include(x => x.Area)
             .Include(x => x.Weathers)
             .Include(x => x.Notifications)
-            .Select(sensor => new SensorViewModel
+            .Select(sensor => new SensorView
                 (
                     sensor.Id,
                     sensor.Type,
@@ -70,9 +70,9 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
             .FirstOrDefaultAsync();
         
         if (sensor is null)
-            return OperationResult<SensorViewModel>.FailureResult($"Sensor '{id}' not found!");
+            return OperationResult<SensorView>.FailureResult();
         
-        return OperationResult<SensorViewModel>.SuccessResult(sensor);
+        return OperationResult<SensorView>.SuccessResult(sensor);
     }
     
     public async Task<OperationResult<int>> InsertAsync(SensorCreate model)

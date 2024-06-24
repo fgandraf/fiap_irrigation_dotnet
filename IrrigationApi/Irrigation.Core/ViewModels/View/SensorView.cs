@@ -1,6 +1,6 @@
 namespace Irrigation.Core.ViewModels.View;
 
-public record SensorViewModel(
+public record SensorView(
     int Id,
     string Type,
     string Location,

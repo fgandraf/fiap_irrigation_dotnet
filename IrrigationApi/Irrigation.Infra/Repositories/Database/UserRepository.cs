@@ -14,7 +14,7 @@ namespace Irrigation.Infra.Repositories.Database;
 public class UserRepository(IrrigationDataContext context) : IUserRepository
 {
     
-    public async Task<OperationResult<User>> GetByLoginAsync(UserLoginViewModel model)
+    public async Task<OperationResult<User>> GetByLoginAsync(UserLoginView model)
     {
         var user = await context
             .Users
@@ -39,7 +39,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .Users
             .AsNoTracking()
             .Include(roles => roles.Roles)
-            .Select(user => new UserViewModel
+            .Select(user => new UserView
                 (
                     user.Id,
                     user.Name,
@@ -52,7 +52,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .ToListAsync();
 
         if (users.Count == 0)
-            return OperationResult<dynamic>.FailureResult("No users registered!");
+            return OperationResult<dynamic>.FailureResult();
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -63,14 +63,14 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
         });
     }
 
-    public async Task<OperationResult<UserViewModel>> GetByEmailAsync(string address)
+    public async Task<OperationResult<UserView>> GetByEmailAsync(string address)
     {
         var user = await context
             .Users
             .AsNoTracking()
             .Where(x => x.Email == address)
             .Include(roles => roles.Roles)
-            .Select(user => new UserViewModel
+            .Select(user => new UserView
                 (
                     user.Id,
                     user.Name,
@@ -81,19 +81,19 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .FirstOrDefaultAsync();
         
         if (user is null)
-            return OperationResult<UserViewModel>.FailureResult($"User '{address}' not found!");
+            return OperationResult<UserView>.FailureResult();
         
-        return OperationResult<UserViewModel>.SuccessResult(user);
+        return OperationResult<UserView>.SuccessResult(user);
     }
 
-    public async Task<OperationResult<UserViewModel>> GetByIdAsync(int id)
+    public async Task<OperationResult<UserView>> GetByIdAsync(int id)
     {
         var user = await context
             .Users
             .AsNoTracking()
             .Where(x => x.Id == id)
             .Include(roles => roles.Roles)
-            .Select(user => new UserViewModel
+            .Select(user => new UserView
                 (
                     user.Id,
                     user.Name,
@@ -104,9 +104,9 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .FirstOrDefaultAsync();
         
         if (user is null)
-            return OperationResult<UserViewModel>.FailureResult($"User '{id}' not found!");
+            return OperationResult<UserView>.FailureResult();
         
-        return OperationResult<UserViewModel>.SuccessResult(user);
+        return OperationResult<UserView>.SuccessResult(user);
     }
 
     public async Task<OperationResult<int>> InsertAsync(UserCreate model)

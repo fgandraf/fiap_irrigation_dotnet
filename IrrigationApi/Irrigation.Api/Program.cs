@@ -1,4 +1,4 @@
-using Irrigation.Api.Extensions;
+global using Irrigation.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

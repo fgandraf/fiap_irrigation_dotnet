@@ -20,7 +20,7 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
             .Notifications
             .AsNoTracking()
             .Include(x => x.Sensor)
-            .Select(notification => new NotificationViewModel
+            .Select(notification => new NotificationView
                 (
                     notification.Id,
                     notification.Description,
@@ -33,7 +33,7 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
             .ToListAsync();
 
         if (notifications.Count == 0)
-            return OperationResult<dynamic>.FailureResult("No notifications registered!");
+            return OperationResult<dynamic>.FailureResult();
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -44,14 +44,14 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
         });
     }
     
-    public async Task<OperationResult<NotificationViewModel>> GetByIdAsync(int id)
+    public async Task<OperationResult<NotificationView>> GetByIdAsync(int id)
     {
         var notification = await context
             .Notifications
             .AsNoTracking()
             .Where(x => x.Id == id)
             .Include(x => x.Sensor)
-            .Select(notification => new NotificationViewModel
+            .Select(notification => new NotificationView
                 (
                     notification.Id,
                     notification.Description,
@@ -62,9 +62,9 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
             .FirstOrDefaultAsync();
         
         if (notification is null)
-            return OperationResult<NotificationViewModel>.FailureResult($"Notification '{id}' not found!");
+            return OperationResult<NotificationView>.FailureResult();
         
-        return OperationResult<NotificationViewModel>.SuccessResult(notification);
+        return OperationResult<NotificationView>.SuccessResult(notification);
     }
     
     public async Task<OperationResult<int>> InsertAsync(NotificationCreate model)

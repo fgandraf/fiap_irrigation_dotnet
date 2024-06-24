@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("api/notifications")]
-public class NotificationController(ITokenService tokenService, INotificationRepository repository): ControllerBase
+[Route("v1/notifications")]
+public class NotificationController(INotificationRepository repository): ControllerBase
 {
     [Authorize(Roles = "admin")]
     [HttpPost]
@@ -27,7 +27,7 @@ public class NotificationController(ITokenService tokenService, INotificationRep
     }
     
     [Authorize(Roles = "admin, user")]
-    [HttpGet("/id/{id}")]
+    [HttpGet("id/{id}")]
     public IActionResult GetById(int id)
     {
         var result = repository.GetByIdAsync(id).Result;

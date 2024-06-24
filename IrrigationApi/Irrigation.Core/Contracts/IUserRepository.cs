@@ -7,10 +7,10 @@ namespace Irrigation.Core.Contracts;
 
 public interface IUserRepository
 {
-    Task<OperationResult<User>> GetByLoginAsync(UserLoginViewModel model);
+    Task<OperationResult<User>> GetByLoginAsync(UserLoginView model);
     Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize);
-    Task<OperationResult<UserViewModel>> GetByEmailAsync(string address);
-    Task<OperationResult<UserViewModel>> GetByIdAsync(int id);
+    Task<OperationResult<UserView>> GetByEmailAsync(string address);
+    Task<OperationResult<UserView>> GetByIdAsync(int id);
     Task<OperationResult<int>> InsertAsync(UserCreate model);
     Task<OperationResult> UpdateAsync(UserUpdateInfo model);
     Task<OperationResult> ActivateAsync(int id);

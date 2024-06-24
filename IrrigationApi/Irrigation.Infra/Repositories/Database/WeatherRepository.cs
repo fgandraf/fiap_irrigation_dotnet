@@ -20,7 +20,7 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
             .Weathers
             .AsNoTracking()
             .Include(x => x.Sensor)
-            .Select(weather => new WeatherViewModel
+            .Select(weather => new WeatherView
                 (
                     weather.Id,
                     weather.Timestamp,
@@ -35,7 +35,7 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
             .ToListAsync();
 
         if (weathers.Count == 0)
-            return OperationResult<dynamic>.FailureResult("No weather registered!");
+            return OperationResult<dynamic>.FailureResult();
         
         return OperationResult<dynamic>.SuccessResult(new
         {
@@ -46,14 +46,14 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
         });
     }
     
-    public async Task<OperationResult<WeatherViewModel>> GetByIdAsync(int id)
+    public async Task<OperationResult<WeatherView>> GetByIdAsync(int id)
     {
         var weather = await context
             .Weathers
             .AsNoTracking()
             .Where(x => x.Id == id)
             .Include(y => y.Sensor)
-            .Select(weather => new WeatherViewModel
+            .Select(weather => new WeatherView
                 (
                     weather.Id,
                     weather.Timestamp,
@@ -66,9 +66,9 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
             .FirstOrDefaultAsync();
         
         if (weather is null)
-            return OperationResult<WeatherViewModel>.FailureResult($"Weather '{id}' not found!");
+            return OperationResult<WeatherView>.FailureResult();
         
-        return OperationResult<WeatherViewModel>.SuccessResult(weather);
+        return OperationResult<WeatherView>.SuccessResult(weather);
     }
     
     public async Task<OperationResult<int>> InsertAsync(WeatherCreate model)

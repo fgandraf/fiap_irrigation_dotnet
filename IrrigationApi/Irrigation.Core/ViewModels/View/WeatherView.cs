@@ -1,6 +1,6 @@
 namespace Irrigation.Core.ViewModels.View;
 
-public record WeatherViewModel(
+public record WeatherView(
     int Id,
     DateTime Timestamp,
     int Temperature,

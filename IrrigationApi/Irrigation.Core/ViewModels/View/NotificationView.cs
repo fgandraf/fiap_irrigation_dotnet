@@ -1,6 +1,6 @@
 namespace Irrigation.Core.ViewModels.View;
 
-public record NotificationViewModel(
+public record NotificationView(
     int Id,
     string Description,
     DateTime Timestamp,

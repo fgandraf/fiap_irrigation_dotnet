@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("api/weathers")]
-public class WeatherController(ITokenService tokenService, IWeatherRepository repository) : ControllerBase
+[Route("v1/weathers")]
+public class WeatherController(IWeatherRepository repository) : ControllerBase
 {
     [Authorize(Roles = "admin")]
     [HttpPost]
@@ -27,7 +27,7 @@ public class WeatherController(ITokenService tokenService, IWeatherRepository re
     }
     
     [Authorize(Roles = "admin, user")]
-    [HttpGet("/id/{id}")]
+    [HttpGet("id/{id}")]
     public IActionResult GetById(int id)
     {
         var result = repository.GetByIdAsync(id).Result;

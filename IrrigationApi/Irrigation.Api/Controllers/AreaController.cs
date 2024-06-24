@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("api/areas")]
-public class AreaController(ITokenService tokenService, IAreaRepository repository): ControllerBase
+[Route("v1/areas")]
+public class AreaController(IAreaRepository repository): ControllerBase
 {
     [Authorize(Roles = "admin")]
     [HttpPost]
@@ -27,7 +27,7 @@ public class AreaController(ITokenService tokenService, IAreaRepository reposito
     }
     
     [Authorize(Roles = "admin, user")]
-    [HttpGet("/id/{id}")]
+    [HttpGet("id/{id}")]
     public IActionResult GetById(int id)
     {
         var result = repository.GetByIdAsync(id).Result;

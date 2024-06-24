@@ -1,6 +1,6 @@
 namespace Irrigation.Core.ViewModels.View;
 
-public record ScheduleViewModel(
+public record ScheduleView(
     int Id,
     DateTime StartDate,
     DateTime EndDate);

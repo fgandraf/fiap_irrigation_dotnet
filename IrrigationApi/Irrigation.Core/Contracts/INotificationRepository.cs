@@ -7,7 +7,7 @@ namespace Irrigation.Core.Contracts;
 public interface INotificationRepository
 {
     Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize);
-    Task<OperationResult<NotificationViewModel>> GetByIdAsync(int id);
+    Task<OperationResult<NotificationView>> GetByIdAsync(int id);
     Task<OperationResult<int>> InsertAsync(NotificationCreate model);
     Task<OperationResult> UpdateAsync(NotificationUpdate model);
     Task<OperationResult> DeleteAsync(int id);

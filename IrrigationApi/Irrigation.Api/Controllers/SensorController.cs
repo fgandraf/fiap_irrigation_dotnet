@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("api/sensors")]
-public class SensorController(ITokenService tokenService, ISensorRepository repository): ControllerBase
+[Route("v1/sensors")]
+public class SensorController(ISensorRepository repository): ControllerBase
 {
     [Authorize(Roles = "admin")]
     [HttpPost]
@@ -27,7 +27,7 @@ public class SensorController(ITokenService tokenService, ISensorRepository repo
     }
     
     [Authorize(Roles = "admin, user")]
-    [HttpGet("/id/{id}")]
+    [HttpGet("id/{id}")]
     public IActionResult GetById(int id)
     {
         var result = repository.GetByIdAsync(id).Result;

@@ -7,7 +7,7 @@ namespace Irrigation.Core.Contracts;
 public interface IScheduleRepository
 {
     Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize);
-    Task<OperationResult<ScheduleViewModel>> GetByIdAsync(int id);
+    Task<OperationResult<ScheduleView>> GetByIdAsync(int id);
     Task<OperationResult<int>> InsertAsync(ScheduleCreate model);
     Task<OperationResult> UpdateAsync(ScheduleUpdate model);
     Task<OperationResult> DeleteAsync(int id);

@@ -7,7 +7,7 @@ namespace Irrigation.Core.Contracts;
 public interface IAreaRepository
 {
     Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize);
-    Task<OperationResult<AreaViewModel>> GetByIdAsync(int id);
+    Task<OperationResult<AreaView>> GetByIdAsync(int id);
     Task<OperationResult<int>> InsertAsync(AreaCreate model);
     Task<OperationResult> UpdateAsync(AreaUpdate model);
     Task<OperationResult> DeleteAsync(int id);

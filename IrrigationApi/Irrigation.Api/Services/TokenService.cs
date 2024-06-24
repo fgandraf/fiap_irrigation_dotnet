@@ -13,7 +13,7 @@ public class TokenService : ITokenService
     public string GenerateToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(Configuration.Secrets.JwtPrivateKey);
+        var key = Encoding.ASCII.GetBytes(Configuration.JwtPrivateKey);
         var credentials = new SigningCredentials(
             new SymmetricSecurityKey(key),
             SecurityAlgorithms.HmacSha256Signature);

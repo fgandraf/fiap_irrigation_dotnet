@@ -7,7 +7,7 @@ namespace Irrigation.Core.Contracts;
 public interface ISensorRepository
 {
     Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize);
-    Task<OperationResult<SensorViewModel>> GetByIdAsync(int id);
+    Task<OperationResult<SensorView>> GetByIdAsync(int id);
     Task<OperationResult<int>> InsertAsync(SensorCreate model);
     Task<OperationResult> UpdateAsync(SensorUpdate model);
     Task<OperationResult> DeleteAsync(int id);

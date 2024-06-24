@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("api/schedules")]
-public class ScheduleController(ITokenService tokenService, IScheduleRepository repository): ControllerBase
+[Route("v1/schedules")]
+public class ScheduleController(IScheduleRepository repository): ControllerBase
 {
     [Authorize(Roles = "admin")]
     [HttpPost]
@@ -27,7 +27,7 @@ public class ScheduleController(ITokenService tokenService, IScheduleRepository 
     }
     
     [Authorize(Roles = "admin, user")]
-    [HttpGet("/id/{id}")]
+    [HttpGet("id/{id}")]
     public IActionResult GetById(int id)
     {
         var result = repository.GetByIdAsync(id).Result;

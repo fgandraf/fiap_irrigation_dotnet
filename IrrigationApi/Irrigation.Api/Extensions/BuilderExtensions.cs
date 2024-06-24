@@ -16,17 +16,15 @@ public static class BuilderExtensions
 {
     public static void AddConfigurationKeys(this WebApplicationBuilder builder)
     {
-        Configuration.Database.ConnectionString = builder.Configuration.GetConnectionString("Default");
-        Configuration.Secrets.JwtPrivateKey =
-            builder.Configuration.GetSection("Secrets").GetValue<string>("JwtPrivateKey") ?? string.Empty;
-
+        Configuration.ConnectionString = builder.Configuration.GetConnectionString("Default");
+        Configuration.JwtPrivateKey = builder.Configuration.GetSection("Secrets").GetValue<string>("JwtPrivateKey") ?? string.Empty;
     }
 
     public static void AddDatabase(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<IrrigationDataContext>(options =>
             options.UseSqlServer(
-                Configuration.Database.ConnectionString,
+                Configuration.ConnectionString,
                 b => b.MigrationsAssembly("Irrigation.Api")
             )
         );
@@ -34,7 +32,7 @@ public static class BuilderExtensions
 
     public static void AddJwtAuthentication(this WebApplicationBuilder builder)
     {
-        var key = Encoding.ASCII.GetBytes(Configuration.Secrets.JwtPrivateKey);
+        var key = Encoding.ASCII.GetBytes(Configuration.JwtPrivateKey);
 
         builder.Services.AddAuthentication(x =>
         {

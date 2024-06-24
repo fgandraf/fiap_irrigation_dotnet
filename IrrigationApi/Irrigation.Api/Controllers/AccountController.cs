@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("api/users")]
-public class UserController(ITokenService tokenService, IUserRepository repository) : ControllerBase
+[Route("v1/accounts")]
+public class AccountController(ITokenService tokenService, IUserRepository repository) : ControllerBase
 {
     [AllowAnonymous]
-    [HttpPost("/login")]
-    public IActionResult GetByLogin([FromBody]UserLoginViewModel model)
+    [HttpPost("login")]
+    public IActionResult GetByLogin([FromBody]UserLoginView model)
     {
         var result = repository.GetByLoginAsync(model).Result;
         return result.Success ? Ok(tokenService.GenerateToken(result.Value)) : BadRequest(result.Message);
     }
     
     [AllowAnonymous]
-    [HttpPost("/register")]
+    [HttpPost("register")]
     public IActionResult Register([FromBody]UserCreate model)
     {
         var result = repository.InsertAsync(model).Result;
@@ -38,7 +38,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     }
     
     [Authorize(Roles = "admin, user")]
-    [HttpGet("/email/{email}")]
+    [HttpGet("email/{email}")]
     public IActionResult GetByEmail(string email)
     {
         var result = repository.GetByEmailAsync(email).Result;
@@ -46,7 +46,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     }
     
     [Authorize(Roles = "admin, user")]
-    [HttpGet("/id/{id}")]
+    [HttpGet("id/{id}")]
     public IActionResult GetById(int id)
     {
         var result = repository.GetByIdAsync(id).Result;
@@ -62,7 +62,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     }
     
     [Authorize(Roles = "admin")]
-    [HttpPut("/activate/{id}")]
+    [HttpPut("activate/{id}")]
     public IActionResult Activate(int id)
     {
         var result = repository.ActivateAsync(id).Result;
@@ -70,7 +70,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     }
     
     [Authorize(Roles = "admin")]
-    [HttpPut("/deactivate/{id}")]
+    [HttpPut("deactivate/{id}")]
     public IActionResult Deactivate(int id)
     {
         var result = repository.DeactivateAsync(id).Result;
@@ -78,7 +78,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     }
     
     [Authorize(Roles = "admin")]
-    [HttpPut("/permission/{userId},{permissionId}")]
+    [HttpPut("permission/{userId},{permissionId}")]
     public IActionResult ChangePermission(int userId, int permissionId)
     {
         var result = repository.ChangePermission(userId, permissionId).Result;

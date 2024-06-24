@@ -1,6 +1,6 @@
 namespace Irrigation.Core.ViewModels.View;
 
-public record AreaViewModel(
+public record AreaView(
     int Id,
     string Description,
     string Location,
