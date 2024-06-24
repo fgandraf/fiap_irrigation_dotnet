@@ -1,4 +1,7 @@
 using Irrigation.Core.Contracts;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Irrigation.Api.Controllers;
@@ -7,52 +10,45 @@ namespace Irrigation.Api.Controllers;
 [Route("api/schedules")]
 public class ScheduleController(ITokenService tokenService, IScheduleRepository repository): ControllerBase
 {
+    [Authorize(Roles = "admin")]
+    [HttpPost]
+    public IActionResult Create([FromBody]ScheduleCreate model)
+    {
+        var result = repository.InsertAsync(model).Result;
+        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : NoContent();
+    }
+    
+    [Authorize(Roles = "admin")]
+    [HttpPut]
+    public IActionResult Update([FromBody]ScheduleUpdate model)
+    {
+        var result = repository.UpdateAsync(model).Result;
+        return result.Success ? Ok() : NoContent();
+    }
+    
+    [Authorize(Roles = "admin, user")]
+    [HttpGet("/id/{id}")]
+    public IActionResult GetById(int id)
+    {
+        var result = repository.GetByIdAsync(id).Result;
+        return result.Success ? Ok(result.Value) : NoContent();
+    }
+    
+    [Authorize(Roles = "admin, user")]
     [HttpGet]
-    public string HelloWorld() => "Hello World";
+    public IActionResult GetAll(
+        [FromQuery]int page = 0, 
+        [FromQuery]int pageSize = 25)
+    {
+        var result = repository.GetAllAsync(page, pageSize).Result;
+        return result.Success ? Ok(result.Value) : NoContent();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var result = repository.DeleteAsync(id).Result;
+        return result.Success ? Ok() : NoContent();
+    }
 }
-
-
-/* #################### FROM JAVA ####################
-
-@RestController
-   @RequestMapping("/api/schedules")
-   public class ScheduleController {
-   
-       @Autowired
-       private ScheduleService service;
-   
-       @PostMapping
-       public ResponseEntity<Schedule> create(@RequestBody @Valid CreateSchedule schedule) {
-           Schedule savedSchedule = service.save(schedule);
-           URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedSchedule.getId()).toUri();
-           return ResponseEntity.created(location).body(savedSchedule);
-       }
-   
-       @GetMapping("/id/{id}")
-       public ResponseEntity<Schedule> getById(@PathVariable Long id) {
-           Optional<Schedule> schedule = service.findById(id);
-           return schedule.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-       }
-   
-       @GetMapping("/all")
-       public ResponseEntity<Page<Schedule>> getAll(Pageable pageable) {
-           Page<Schedule> schedules = service.findAll(pageable);
-           return ResponseEntity.ok(schedules);
-       }
-   
-       @PutMapping
-       public ResponseEntity<Schedule> update(@RequestBody @Valid UpdateSchedule schedule) {
-               return ResponseEntity.ok(service.update(schedule));
-       }
-   
-       @DeleteMapping("/{id}")
-       public ResponseEntity<Void> delete(@PathVariable Long id) {
-           if (!service.findById(id).isPresent()) {
-               return ResponseEntity.notFound().build();
-           }
-           service.deleteById(id);
-           return ResponseEntity.noContent().build();
-       }
-   }
-   
-*/

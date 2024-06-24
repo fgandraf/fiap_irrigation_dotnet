@@ -1,4 +1,7 @@
 using Irrigation.Core.Contracts;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Irrigation.Api.Controllers;
@@ -7,48 +10,45 @@ namespace Irrigation.Api.Controllers;
 [Route("api/sensors")]
 public class SensorController(ITokenService tokenService, ISensorRepository repository): ControllerBase
 {
+    [Authorize(Roles = "admin")]
+    [HttpPost]
+    public IActionResult Create([FromBody]SensorCreate model)
+    {
+        var result = repository.InsertAsync(model).Result;
+        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : NoContent();
+    }
+    
+    [Authorize(Roles = "admin")]
+    [HttpPut]
+    public IActionResult Update([FromBody]SensorUpdate model)
+    {
+        var result = repository.UpdateAsync(model).Result;
+        return result.Success ? Ok() : NoContent();
+    }
+    
+    [Authorize(Roles = "admin, user")]
+    [HttpGet("/id/{id}")]
+    public IActionResult GetById(int id)
+    {
+        var result = repository.GetByIdAsync(id).Result;
+        return result.Success ? Ok(result.Value) : NoContent();
+    }
+    
+    [Authorize(Roles = "admin, user")]
     [HttpGet]
-    public string HelloWorld() => "Hello World";
+    public IActionResult GetAll(
+        [FromQuery]int page = 0, 
+        [FromQuery]int pageSize = 25)
+    {
+        var result = repository.GetAllAsync(page, pageSize).Result;
+        return result.Success ? Ok(result.Value) : NoContent();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var result = repository.DeleteAsync(id).Result;
+        return result.Success ? Ok() : NoContent();
+    }
 }
-
-
-/* #################### FROM JAVA ####################
-
-@RestController
-   @RequestMapping("/api/sensors")
-   public class SensorController {
-   
-       @Autowired
-       private SensorService service;
-   
-       @PostMapping
-       public ResponseEntity<OutputSensor> create(@RequestBody CreateSensor createSensor){
-           OutputSensor outputSensor = service.create(createSensor);
-           URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}").buildAndExpand(outputSensor.id()).toUri();
-           return ResponseEntity.created(location).body(outputSensor);
-       }
-   
-       @GetMapping("/id/{id}")
-       public ResponseEntity<OutputSensor> getById(@PathVariable Long id){
-           return ResponseEntity.ok(service.findById(id));
-       }
-   
-       @GetMapping("/all")
-       public Page<OutputSensor> getAll(Pageable pageable){
-           return service.findAll(pageable);
-       }
-   
-       @PutMapping
-       public OutputSensor update(@RequestBody UpdateSensor updateSensor){
-           return service.update(updateSensor);
-       }
-   
-       @DeleteMapping("/{id}")
-       public ResponseEntity<Void> delete(@PathVariable Long id){
-           service.delete(id);
-           return ResponseEntity.noContent().build();
-       }
-   
-   }
-   
-*/

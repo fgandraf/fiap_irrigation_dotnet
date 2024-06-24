@@ -1,5 +1,6 @@
 using Irrigation.Core.Contracts;
 using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,45 +10,45 @@ namespace Irrigation.Api.Controllers;
 [Route("api/areas")]
 public class AreaController(ITokenService tokenService, IAreaRepository repository): ControllerBase
 {
-    
     [Authorize(Roles = "admin")]
     [HttpPost]
     public IActionResult Create([FromBody]AreaCreate model)
     {
         var result = repository.InsertAsync(model).Result;
-        return result.Success ? Ok(result.Value) : BadRequest(result.Message);
+        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : NoContent();
     }
     
+    [Authorize(Roles = "admin")]
+    [HttpPut]
+    public IActionResult Update([FromBody]AreaUpdate model)
+    {
+        var result = repository.UpdateAsync(model).Result;
+        return result.Success ? Ok() : NoContent();
+    }
     
+    [Authorize(Roles = "admin, user")]
+    [HttpGet("/id/{id}")]
+    public IActionResult GetById(int id)
+    {
+        var result = repository.GetByIdAsync(id).Result;
+        return result.Success ? Ok(result.Value) : NoContent();
+    }
     
+    [Authorize(Roles = "admin, user")]
+    [HttpGet]
+    public IActionResult GetAll(
+        [FromQuery]int page = 0, 
+        [FromQuery]int pageSize = 25)
+    {
+        var result = repository.GetAllAsync(page, pageSize).Result;
+        return result.Success ? Ok(result.Value) : NoContent();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var result = repository.DeleteAsync(id).Result;
+        return result.Success ? Ok() : NoContent();
+    }
 }
-
-
-
-
-
-/* #################### FROM JAVA ####################
- 
-   @GetMapping("/id/{id}")
-   public ResponseEntity<OutputArea> getById(@PathVariable Long id) {
-       return ResponseEntity.ok(service.findById(id));
-   }
-
-   @GetMapping("/all")
-   public ResponseEntity<Page<OutputArea>> getAll(Pageable pageable) {
-       return ResponseEntity.ok(service.findAll(pageable));
-   }
-
-   @PutMapping
-   public ResponseEntity<OutputArea> update(@RequestBody UpdateArea area) {
-       return ResponseEntity.ok(service.update(area));
-   }
-
-   @DeleteMapping("/{id}")
-   public ResponseEntity<Void> delete(@PathVariable Long id) {
-       service.delete(id);
-       return ResponseEntity.noContent().build();
-   }
-
-}
-*/

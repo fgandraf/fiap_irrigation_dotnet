@@ -24,7 +24,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     public IActionResult Register([FromBody]UserCreate model)
     {
         var result = repository.InsertAsync(model).Result;
-        return result.Success ? Ok(result.Value) : BadRequest(result.Message);
+        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : NoContent();
     }
     
     [Authorize(Roles = "admin, user")]
@@ -45,7 +45,6 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
         return result.Success ? Ok(result.Value) : BadRequest(result.Message);
     }
     
-    
     [Authorize(Roles = "admin, user")]
     [HttpGet("/id/{id}")]
     public IActionResult GetById(int id)
@@ -59,7 +58,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     public IActionResult Update([FromBody]UserUpdateInfo model)
     {
         var result = repository.UpdateAsync(model).Result;
-        return result.Success ? Ok() : BadRequest(result.Message);
+        return result.Success ? Ok() : NoContent();
     }
     
     [Authorize(Roles = "admin")]
@@ -67,7 +66,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     public IActionResult Activate(int id)
     {
         var result = repository.ActivateAsync(id).Result;
-        return result.Success ? Ok() : BadRequest(result.Message);
+        return result.Success ? Ok() : NoContent();
     }
     
     [Authorize(Roles = "admin")]
@@ -75,7 +74,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     public IActionResult Deactivate(int id)
     {
         var result = repository.DeactivateAsync(id).Result;
-        return result.Success ? Ok() : BadRequest(result.Message);
+        return result.Success ? Ok() : NoContent();
     }
     
     [Authorize(Roles = "admin")]
@@ -83,7 +82,6 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     public IActionResult ChangePermission(int userId, int permissionId)
     {
         var result = repository.ChangePermission(userId, permissionId).Result;
-        return result.Success ? Ok() : BadRequest(result.Message);
+        return result.Success ? Ok() : NoContent();
     }
-    
 }

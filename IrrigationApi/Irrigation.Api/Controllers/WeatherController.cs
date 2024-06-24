@@ -1,4 +1,7 @@
 using Irrigation.Core.Contracts;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Irrigation.Api.Controllers;
@@ -7,48 +10,45 @@ namespace Irrigation.Api.Controllers;
 [Route("api/weathers")]
 public class WeatherController(ITokenService tokenService, IWeatherRepository repository) : ControllerBase
 {
+    [Authorize(Roles = "admin")]
+    [HttpPost]
+    public IActionResult Create([FromBody]WeatherCreate model)
+    {
+        var result = repository.InsertAsync(model).Result;
+        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : NoContent();
+    }
+    
+    [Authorize(Roles = "admin")]
+    [HttpPut]
+    public IActionResult Update([FromBody]WeatherUpdate model)
+    {
+        var result = repository.UpdateAsync(model).Result;
+        return result.Success ? Ok() : NoContent();
+    }
+    
+    [Authorize(Roles = "admin, user")]
+    [HttpGet("/id/{id}")]
+    public IActionResult GetById(int id)
+    {
+        var result = repository.GetByIdAsync(id).Result;
+        return result.Success ? Ok(result.Value) : NoContent();
+    }
+    
+    [Authorize(Roles = "admin, user")]
     [HttpGet]
-    public string HelloWorld() => "Hello World";
+    public IActionResult GetAll(
+        [FromQuery]int page = 0, 
+        [FromQuery]int pageSize = 25)
+    {
+        var result = repository.GetAllAsync(page, pageSize).Result;
+        return result.Success ? Ok(result.Value) : NoContent();
+    }
+
+    [Authorize(Roles = "admin")]
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var result = repository.DeleteAsync(id).Result;
+        return result.Success ? Ok() : NoContent();
+    }
 }
-
-
-/* #################### FROM JAVA ####################
-
-@RestController
-   @RequestMapping("/api/weathers")
-   public class WeatherController {
-   
-       @Autowired
-       private WeatherService service;
-       @PostMapping
-       public ResponseEntity<OutputWeather> create(@RequestBody @Valid CreateWeather weather) {
-           OutputWeather savedWeather = service.create(weather);
-           URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedWeather.id()).toUri();
-           return ResponseEntity.created(location).body(savedWeather);
-       }
-   
-       @GetMapping("/id/{id}")
-       public ResponseEntity<Weather> getById(@PathVariable Long id) {
-           Optional<Weather> weather = service.findById(id);
-           return weather.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-       }
-   
-       @GetMapping("/all")
-       public ResponseEntity<Page<Weather>> getAll(Pageable pageable) {
-           Page<Weather> weathers = service.findAll(pageable);
-           return ResponseEntity.ok(weathers);
-       }
-   
-       @PutMapping
-       public OutputWeather update(@RequestBody @Valid UpdateWeather weather) {
-           return service.update(weather);
-       }
-   
-       @DeleteMapping("/{id}")
-       public ResponseEntity<Void> delete(@PathVariable Long id) {
-           service.deleteById(id);
-           return ResponseEntity.noContent().build();
-       }
-   }
-   
-*/
