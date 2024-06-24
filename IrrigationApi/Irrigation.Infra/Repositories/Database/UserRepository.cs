@@ -131,6 +131,10 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
     public async Task<OperationResult> UpdateAsync(UserUpdateInfo model)
     {
         var user = await context.Users.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+
+        if (user is null)
+            return OperationResult.FailureResult($"User {model.Id} not found!");
+        
         user.Name = model.Name;
         user.Email = model.Email;
         user.PasswordHash = PasswordHasher.Hash(model.Password);
@@ -143,6 +147,9 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
     public async Task<OperationResult> ActivateAsync(int id)
     {
         var user = await context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (user is null)
+            return OperationResult.FailureResult();
+        
         user.Active = true;
         context.Users.Update(user);
         
@@ -153,6 +160,9 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
     public async Task<OperationResult> DeactivateAsync(int id)
     {
         var user = await context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (user is null)
+            return OperationResult.FailureResult();
+        
         user.Active = false;
         context.Users.Update(user);
         
@@ -160,15 +170,21 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
         return rowsAffected > 0 ? OperationResult.SuccessResult() : OperationResult.FailureResult("Unable to alter user state!");
     }
 
-    public async Task<OperationResult> ChangePermission(int userId, int permissionId)
+    public async Task<OperationResult> ChangePermission(int userId, int roleId)
     {
         var user = await context.
             Users
             .Include(x=> x.Roles)
             .Where(x => x.Id == userId)
             .FirstOrDefaultAsync();
+
+        if (user is null)
+            return OperationResult.FailureResult($"User {userId} not found!");
         
-        var role = await context.Roles.Where(x => x.Id == permissionId).FirstOrDefaultAsync();
+        var role = await context.Roles.Where(x => x.Id == roleId).FirstOrDefaultAsync();
+        
+        if (role is null)
+            return OperationResult.FailureResult($"Role {roleId} not found!");
         
         user.Roles = new List<Role> { role };
         

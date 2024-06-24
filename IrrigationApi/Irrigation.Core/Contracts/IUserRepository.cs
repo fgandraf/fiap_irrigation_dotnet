@@ -15,5 +15,5 @@ public interface IUserRepository
     Task<OperationResult> UpdateAsync(UserUpdateInfo model);
     Task<OperationResult> ActivateAsync(int id);
     Task<OperationResult> DeactivateAsync(int id);
-    Task<OperationResult> ChangePermission(int userId, int permissionId);
+    Task<OperationResult> ChangePermission(int userId, int roleId);
 }

@@ -24,7 +24,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     public IActionResult Register([FromBody]UserCreate model)
     {
         var result = repository.InsertAsync(model).Result;
-        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : NoContent();
+        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : BadRequest(result.Message);
     }
     
     [Authorize(Roles = "admin, user")]
@@ -34,7 +34,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
         [FromQuery]int pageSize = 25)
     {
         var result = repository.GetAllAsync(page, pageSize).Result;
-        return result.Success ? Ok(result.Value) : BadRequest(result.Message);
+        return result.Success ? Ok(result.Value) : NotFound();
     }
     
     [Authorize(Roles = "admin, user")]
@@ -42,7 +42,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     public IActionResult GetByEmail(string email)
     {
         var result = repository.GetByEmailAsync(email).Result;
-        return result.Success ? Ok(result.Value) : BadRequest(result.Message);
+        return result.Success ? Ok(result.Value) : NotFound();
     }
     
     [Authorize(Roles = "admin, user")]
@@ -50,7 +50,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     public IActionResult GetById(int id)
     {
         var result = repository.GetByIdAsync(id).Result;
-        return result.Success ? Ok(result.Value) : BadRequest(result.Message);
+        return result.Success ? Ok(result.Value) : NotFound();
     }
     
     [Authorize(Roles = "admin, user")]
@@ -58,7 +58,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     public IActionResult Update([FromBody]UserUpdateInfo model)
     {
         var result = repository.UpdateAsync(model).Result;
-        return result.Success ? Ok() : NoContent();
+        return result.Success ? Ok() : BadRequest(result.Message);
     }
     
     [Authorize(Roles = "admin")]
@@ -66,7 +66,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     public IActionResult Activate(int id)
     {
         var result = repository.ActivateAsync(id).Result;
-        return result.Success ? Ok() : NoContent();
+        return result.Success ? Ok() : BadRequest(result.Message);
     }
     
     [Authorize(Roles = "admin")]
@@ -74,14 +74,14 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     public IActionResult Deactivate(int id)
     {
         var result = repository.DeactivateAsync(id).Result;
-        return result.Success ? Ok() : NoContent();
+        return result.Success ? Ok() : BadRequest(result.Message);
     }
     
     [Authorize(Roles = "admin")]
-    [HttpPut("permission/{userId},{permissionId}")]
-    public IActionResult ChangePermission(int userId, int permissionId)
+    [HttpPut("permission/{userId},{roleId}")]
+    public IActionResult ChangePermission(int userId, int roleId)
     {
-        var result = repository.ChangePermission(userId, permissionId).Result;
-        return result.Success ? Ok() : NoContent();
+        var result = repository.ChangePermission(userId, roleId).Result;
+        return result.Success ? Ok() : BadRequest(result.Message);
     }
 }
