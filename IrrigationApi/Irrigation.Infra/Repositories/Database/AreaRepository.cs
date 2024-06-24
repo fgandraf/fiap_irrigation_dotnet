@@ -1,7 +1,8 @@
 using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
-using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
 using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -67,7 +68,7 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
         return OperationResult<AreaViewModel>.SuccessResult(area);
     }
     
-    public async Task<OperationResult<int>> InsertAsync(AreaViewModel model)
+    public async Task<OperationResult<int>> InsertAsync(AreaCreate model)
     {
         var area = new Area
         {
@@ -83,7 +84,7 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
         return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add area!");
     }
     
-    public async Task<OperationResult> UpdateAsync(AreaViewModel model)
+    public async Task<OperationResult> UpdateAsync(AreaUpdate model)
     {
         var area = await context.Areas.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
         area.Description = model.Description;

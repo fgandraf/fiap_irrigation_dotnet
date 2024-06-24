@@ -2,6 +2,8 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
 using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -61,7 +63,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
         return OperationResult<ScheduleViewModel>.SuccessResult(schedule);
     }
     
-    public async Task<OperationResult<int>> InsertAsync(ScheduleViewModel model)
+    public async Task<OperationResult<int>> InsertAsync(ScheduleCreate model)
     {
         var schedule = new Schedule
         {
@@ -75,7 +77,7 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
         return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add schedule!");
     }
     
-    public async Task<OperationResult> UpdateAsync(ScheduleViewModel model)
+    public async Task<OperationResult> UpdateAsync(ScheduleUpdate model)
     {
         var schedule = await context.Schedules.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
         schedule.StartTime = model.StartDate;

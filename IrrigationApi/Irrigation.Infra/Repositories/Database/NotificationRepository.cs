@@ -2,6 +2,8 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
 using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -65,7 +67,7 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
         return OperationResult<NotificationViewModel>.SuccessResult(notification);
     }
     
-    public async Task<OperationResult<int>> InsertAsync(NotificationViewModel model)
+    public async Task<OperationResult<int>> InsertAsync(NotificationCreate model)
     {
         var notification = new Notification
         {
@@ -80,7 +82,7 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
         return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add notification!");
     }
     
-    public async Task<OperationResult> UpdateAsync(NotificationViewModel model)
+    public async Task<OperationResult> UpdateAsync(NotificationUpdate model)
     {
         var notification = await context.Notifications.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
         notification.Description = model.Description;

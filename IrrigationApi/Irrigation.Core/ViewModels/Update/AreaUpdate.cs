@@ -1,10 +1,14 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Irrigation.Core.ViewModels.Create;
+namespace Irrigation.Core.ViewModels.Update;
 
-public record AreaCreate
+public record AreaUpdate
 {
+    [Required(ErrorMessage = "'Id' is required!")]
+    [DefaultValue("")]
+    public int Id { get; set; }
+    
     [Required(ErrorMessage = "Description is required!")]
     [DefaultValue("")]
     public string Description { get; set; }

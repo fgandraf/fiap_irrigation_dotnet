@@ -3,20 +3,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Irrigation.Core.ViewModels.Create;
 
-public record AreaCreate
+public record NotificationCreate
 {
     [Required(ErrorMessage = "Description is required!")]
     [DefaultValue("")]
     public string Description { get; set; }
     
-    [Required(ErrorMessage = "Location is required!")]
+    [Required(ErrorMessage = "Timestamp is required!")]
     [DefaultValue("")]
-    public string Location { get; set; }
+    public DateTime Timestamp { get; set; }
     
-    [Required(ErrorMessage = "Size is required!")]
+    [Required(ErrorMessage = "Sensor Id is required!")]
     [DefaultValue("")]
-    public string Size { get; set; }
-    
-    [DefaultValue("[]")]
-    public List<int> SensorsId { get; set; }
+    public int SensorId { get; set; }
 }

@@ -2,6 +2,8 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
 using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -69,7 +71,7 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
         return OperationResult<WeatherViewModel>.SuccessResult(weather);
     }
     
-    public async Task<OperationResult<int>> InsertAsync(WeatherViewModel model)
+    public async Task<OperationResult<int>> InsertAsync(WeatherCreate model)
     {
         var weather = new Weather
         {
@@ -85,7 +87,7 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
         return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add weather!");
     }
     
-    public async Task<OperationResult> UpdateAsync(WeatherViewModel model)
+    public async Task<OperationResult> UpdateAsync(WeatherUpdate model)
     {
         var weather = await context.Weathers.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
         weather.Humidity = model.Humidity;

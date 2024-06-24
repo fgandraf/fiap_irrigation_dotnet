@@ -5,7 +5,7 @@ namespace Irrigation.Core.ViewModels.Update;
 
 public record UserUpdateInfo
 {
-    [Required(ErrorMessage = "O campo 'Id' é obrigatório.")]
+    [Required(ErrorMessage = "'Id' is required!")]
     [DefaultValue("")]
     public int Id { get; set; }
     

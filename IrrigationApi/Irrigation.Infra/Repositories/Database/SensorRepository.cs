@@ -2,6 +2,8 @@ using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
 using Irrigation.Core.ViewModels.View;
 using Irrigation.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -73,7 +75,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
         return OperationResult<SensorViewModel>.SuccessResult(sensor);
     }
     
-    public async Task<OperationResult<int>> InsertAsync(SensorViewModel model)
+    public async Task<OperationResult<int>> InsertAsync(SensorCreate model)
     {
         var sensor = new Sensor
         {
@@ -90,7 +92,7 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
         return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add sensor!");
     }
     
-    public async Task<OperationResult> UpdateAsync(SensorViewModel model)
+    public async Task<OperationResult> UpdateAsync(SensorUpdate model)
     {
         var sensor = await context.Sensors.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
         sensor.Type = model.Type;

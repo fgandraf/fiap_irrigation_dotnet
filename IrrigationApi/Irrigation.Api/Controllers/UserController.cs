@@ -1,12 +1,14 @@
 using Irrigation.Core.Contracts;
-using Irrigation.Core.ViewModels;
+using Irrigation.Core.ViewModels.Create;
+using Irrigation.Core.ViewModels.Update;
+using Irrigation.Core.ViewModels.View;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("v1/user")]
+[Route("api/users")]
 public class UserController(ITokenService tokenService, IUserRepository repository) : ControllerBase
 {
     [AllowAnonymous]
@@ -19,7 +21,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     
     [AllowAnonymous]
     [HttpPost("/register")]
-    public IActionResult Register([FromBody]UserRegisterInput model)
+    public IActionResult Register([FromBody]UserCreate model)
     {
         var result = repository.InsertAsync(model).Result;
         return result.Success ? Ok(result.Value) : BadRequest(result.Message);
@@ -54,7 +56,7 @@ public class UserController(ITokenService tokenService, IUserRepository reposito
     
     [Authorize(Roles = "admin, user")]
     [HttpPut]
-    public IActionResult Update([FromBody]UserUpdateInfoInput model)
+    public IActionResult Update([FromBody]UserUpdateInfo model)
     {
         var result = repository.UpdateAsync(model).Result;
         return result.Success ? Ok() : BadRequest(result.Message);
