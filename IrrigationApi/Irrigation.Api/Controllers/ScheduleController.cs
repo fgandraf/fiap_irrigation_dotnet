@@ -15,7 +15,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     public IActionResult Create([FromBody]ScheduleCreate model)
     {
         var result = repository.InsertAsync(model).Result;
-        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : NoContent();
+        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : BadRequest(result.Message);
     }
     
     [Authorize(Roles = "admin")]
@@ -23,7 +23,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     public IActionResult Update([FromBody]ScheduleUpdate model)
     {
         var result = repository.UpdateAsync(model).Result;
-        return result.Success ? Ok() : NoContent();
+        return result.Success ? Ok() : BadRequest(result.Message);
     }
     
     [Authorize(Roles = "admin, user")]
@@ -31,7 +31,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     public IActionResult GetById(int id)
     {
         var result = repository.GetByIdAsync(id).Result;
-        return result.Success ? Ok(result.Value) : NoContent();
+        return result.Success ? Ok(result.Value) : NotFound();
     }
     
     [Authorize(Roles = "admin, user")]
@@ -41,7 +41,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
         [FromQuery]int pageSize = 25)
     {
         var result = repository.GetAllAsync(page, pageSize).Result;
-        return result.Success ? Ok(result.Value) : NoContent();
+        return result.Success ? Ok(result.Value) : NoContent();;
     }
 
     [Authorize(Roles = "admin")]
@@ -49,6 +49,6 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     public IActionResult Delete(int id)
     {
         var result = repository.DeleteAsync(id).Result;
-        return result.Success ? Ok() : NoContent();
+        return result.Success ? Ok() : BadRequest(result.Message);
     }
 }

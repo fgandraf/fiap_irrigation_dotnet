@@ -1,7 +1,6 @@
 using Irrigation.Core;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.Models;
-using Irrigation.Core.ViewModels;
 using Irrigation.Core.ViewModels.Create;
 using Irrigation.Core.ViewModels.Update;
 using Irrigation.Core.ViewModels.View;
@@ -111,7 +110,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
 
     public async Task<OperationResult<int>> InsertAsync(UserCreate model)
     {
-        var userRole = context.Roles.FirstOrDefault(x => x.Id == 2);
+        var userRole = await context.Roles.Where(x => x.Id == 2).FirstOrDefaultAsync();
         var user = new User
         {
             Active = false,
@@ -124,8 +123,8 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             }
         };
         context.Users.Add(user);
-        var id = await context.SaveChangesAsync();
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add user!");
+        var rowsAffected = await context.SaveChangesAsync();
+        return rowsAffected > 0 ? OperationResult<int>.SuccessResult(user.Id) : OperationResult<int>.FailureResult("Unable to add user!");
     }
 
     public async Task<OperationResult> UpdateAsync(UserUpdateInfo model)

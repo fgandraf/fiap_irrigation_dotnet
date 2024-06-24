@@ -72,14 +72,18 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
         };
         
         context.Schedules.Add(schedule);
-        var id = await context.SaveChangesAsync();
+        var rowsAffected = await context.SaveChangesAsync();
         
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add schedule!");
+        return rowsAffected > 0 ? OperationResult<int>.SuccessResult(schedule.Id) : OperationResult<int>.FailureResult("Unable to add schedule!");
     }
     
     public async Task<OperationResult> UpdateAsync(ScheduleUpdate model)
     {
         var schedule = await context.Schedules.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+        
+        if (schedule is null)
+            return OperationResult.FailureResult($"Schedule {model.Id} not found!");
+        
         schedule.StartTime = model.StartDate;
         schedule.EndTime = model.EndDate;
         
@@ -92,6 +96,8 @@ public class ScheduleRepository(IrrigationDataContext context) : IScheduleReposi
     public async Task<OperationResult> DeleteAsync(int id)
     {
         var schedule = await context.Schedules.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (schedule is null)
+            return OperationResult.FailureResult($"Schedule {id} not found!");
         
         context.Schedules.Remove(schedule);
         var rowsAffected = await context.SaveChangesAsync();

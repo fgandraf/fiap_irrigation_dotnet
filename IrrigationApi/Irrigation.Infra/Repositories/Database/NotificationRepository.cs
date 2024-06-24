@@ -69,25 +69,36 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
     
     public async Task<OperationResult<int>> InsertAsync(NotificationCreate model)
     {
+        var sensor = await context.Sensors.Where(x => x.Id == model.SensorId).FirstOrDefaultAsync();
+        if (sensor is null)
+            return OperationResult<int>.FailureResult($"Sensor {model.SensorId} not found!");
+        
         var notification = new Notification
         {
             Description = model.Description,
             Timestamp = model.Timestamp,
-            Sensor = await context.Sensors.Where(x => x.Id == model.SensorId).FirstOrDefaultAsync()
+            Sensor = sensor
         };
         
         context.Notifications.Add(notification);
-        var id = await context.SaveChangesAsync();
+        var rowsAffected = await context.SaveChangesAsync();
         
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add notification!");
+        return rowsAffected > 0 ? OperationResult<int>.SuccessResult(notification.Id) : OperationResult<int>.FailureResult("Unable to add notification!");
     }
     
     public async Task<OperationResult> UpdateAsync(NotificationUpdate model)
     {
         var notification = await context.Notifications.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+        if (notification is null)
+            return OperationResult.FailureResult($"Notification {model.Id} not found!");
+        
+        var sensor = await context.Sensors.Where(x => x.Id == model.SensorId).FirstOrDefaultAsync();
+        if (sensor is null)
+            return OperationResult<int>.FailureResult($"Sensor {model.SensorId} not found!");
+        
         notification.Description = model.Description;
         notification.Timestamp = model.Timestamp;
-        notification.Sensor = await context.Sensors.Where(x => x.Id == model.SensorId).FirstOrDefaultAsync();
+        notification.Sensor = sensor;
         
         context.Notifications.Update(notification);
         var rowsAffected = await context.SaveChangesAsync();
@@ -98,6 +109,8 @@ public class NotificationRepository(IrrigationDataContext context) : INotificati
     public async Task<OperationResult> DeleteAsync(int id)
     {
         var notification = await context.Notifications.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (notification is null)
+            return OperationResult.FailureResult($"Notification {id} not found!");
         
         context.Notifications.Remove(notification);
         var rowsAffected = await context.SaveChangesAsync();

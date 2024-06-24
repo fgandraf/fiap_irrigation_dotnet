@@ -73,28 +73,39 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
     
     public async Task<OperationResult<int>> InsertAsync(WeatherCreate model)
     {
+        var sensor = await context.Sensors.Where(x => x.Id == model.SensorId).FirstOrDefaultAsync();
+        if (sensor is null)
+            return OperationResult<int>.FailureResult($"Sensor {model.SensorId} not found!");
+        
         var weather = new Weather
         {
             Timestamp = model.Timestamp,
             Temperature = model.Temperature,
             Humidity = model.Humidity,
             Description = model.Description,
-            Sensor = context.Sensors.FirstOrDefault(x => x.Id == model.SensorId)
+            Sensor = sensor
         };
         
         context.Weathers.Add(weather);
-        var id = await context.SaveChangesAsync();
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add weather!");
+        var rowsAffected = await context.SaveChangesAsync();
+        return rowsAffected > 0 ? OperationResult<int>.SuccessResult(weather.Id) : OperationResult<int>.FailureResult("Unable to add weather!");
     }
     
     public async Task<OperationResult> UpdateAsync(WeatherUpdate model)
     {
         var weather = await context.Weathers.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+        if (weather is null)
+            return OperationResult.FailureResult($"Weather {model.Id} not found!");
+        
+        var sensor = await context.Sensors.Where(x => x.Id == model.SensorId).FirstOrDefaultAsync();
+        if (sensor is null)
+            return OperationResult<int>.FailureResult($"Sensor {model.SensorId} not found!");
+        
         weather.Humidity = model.Humidity;
         weather.Temperature = model.Temperature;
         weather.Humidity = model.Humidity;
         weather.Description = model.Description;
-        weather.Sensor = context.Sensors.FirstOrDefault(x => x.Id == model.SensorId);
+        weather.Sensor = sensor;
         
         context.Weathers.Update(weather);
         
@@ -105,6 +116,9 @@ public class WeatherRepository(IrrigationDataContext context) : IWeatherReposito
     public async Task<OperationResult> DeleteAsync(int id)
     {
         var weather = await context.Weathers.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (weather is null)
+            return OperationResult.FailureResult($"Weather {id} not found!");
+        
         context.Weathers.Remove(weather);
         
         var rowsAffected = await context.SaveChangesAsync();

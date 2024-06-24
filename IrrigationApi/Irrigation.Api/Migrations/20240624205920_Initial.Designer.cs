@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Irrigation.Api.Migrations
 {
     [DbContext(typeof(IrrigationDataContext))]
-    [Migration("20240623161044_Initial")]
+    [Migration("20240624205920_Initial")]
     partial class Initial
     {
         /// <inheritdoc />

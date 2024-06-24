@@ -79,14 +79,17 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
         };
         
         context.Areas.Add(area);
-        var id = await context.SaveChangesAsync();
+        var rowsAffected = await context.SaveChangesAsync();
         
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add area!");
+        return rowsAffected > 0 ? OperationResult<int>.SuccessResult(area.Id) : OperationResult<int>.FailureResult("Unable to add area!");
     }
     
     public async Task<OperationResult> UpdateAsync(AreaUpdate model)
     {
         var area = await context.Areas.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+        if (area is null)
+            return OperationResult.FailureResult($"Area {model.Id} not found!");
+        
         area.Description = model.Description;
         area.Location = model.Location;
         area.Size = model.Size;
@@ -101,6 +104,8 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
     public async Task<OperationResult> DeleteAsync(int id)
     {
         var area = await context.Areas.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (area is null)
+            return OperationResult.FailureResult($"Area {id} not found!");
         
         context.Areas.Remove(area);
         var rowsAffected = await context.SaveChangesAsync();

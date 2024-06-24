@@ -34,7 +34,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
         [FromQuery]int pageSize = 25)
     {
         var result = repository.GetAllAsync(page, pageSize).Result;
-        return result.Success ? Ok(result.Value) : NotFound();
+        return result.Success ? Ok(result.Value) : NoContent();
     }
     
     [Authorize(Roles = "admin, user")]

@@ -77,27 +77,38 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
     
     public async Task<OperationResult<int>> InsertAsync(SensorCreate model)
     {
+        var area = await context.Areas.Where(x => x.Id == model.AreaId).FirstOrDefaultAsync();
+        if (area is null)
+            return OperationResult<int>.FailureResult($"Area {model.AreaId} not found!");
+        
         var sensor = new Sensor
         {
             Type = model.Type,
             Location = model.Location,
-            Area = await context.Areas.Where(x => x.Id == model.AreaId).FirstOrDefaultAsync(),
+            Area = area,
             Weathers = await context.Weathers.Where(x => model.WeathersId.Contains(x.Id)).ToListAsync(),
             Notifications = await context.Notifications.Where(x => model.NotificationsId.Contains(x.Id)).ToListAsync()
         };
         
         context.Sensors.Add(sensor);
-        var id = await context.SaveChangesAsync();
         
-        return id > 0 ? OperationResult<int>.SuccessResult(id) : OperationResult<int>.FailureResult("Unable to add sensor!");
+        var rowsAffected = await context.SaveChangesAsync();
+        return rowsAffected > 0 ? OperationResult<int>.SuccessResult(sensor.Id) : OperationResult<int>.FailureResult("Unable to add sensor!");
     }
     
     public async Task<OperationResult> UpdateAsync(SensorUpdate model)
     {
         var sensor = await context.Sensors.Where(x => x.Id == model.Id).FirstOrDefaultAsync();
+        if (sensor is null)
+            return OperationResult.FailureResult($"Sensor {model.Id} not found!");
+        
+        var area = await context.Areas.Where(x => x.Id == model.AreaId).FirstOrDefaultAsync();
+        if (area is null)
+            return OperationResult<int>.FailureResult($"Area {model.AreaId} not found!");
+        
         sensor.Type = model.Type;
         sensor.Location = model.Location;
-        sensor.Area = await context.Areas.Where(x => x.Id == model.AreaId).FirstOrDefaultAsync();
+        sensor.Area = area;
         sensor.Weathers = await context.Weathers.Where(x => model.WeathersId.Contains(x.Id)).ToListAsync();
         sensor.Notifications = await context.Notifications.Where(x => model.NotificationsId.Contains(x.Id)).ToListAsync();
         
@@ -110,6 +121,8 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
     public async Task<OperationResult> DeleteAsync(int id)
     {
         var sensor = await context.Sensors.Where(x => x.Id == id).FirstOrDefaultAsync();
+        if (sensor is null)
+            return OperationResult.FailureResult($"Sensor {id} not found!");
         
         context.Sensors.Remove(sensor);
         var rowsAffected = await context.SaveChangesAsync();
