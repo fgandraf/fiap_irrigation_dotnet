@@ -59,7 +59,7 @@ public static class BuilderExtensions
         });
 
 
-    public static void AddRepositoryServices(this WebApplicationBuilder builder)
+    public static void AddDependenciesInjection(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IrrigationDataContext>();
         
@@ -76,9 +76,7 @@ public static class BuilderExtensions
 
     public static void AddSwaggerConfigurations(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSwaggerGen();
-
-        builder.Services.AddSwaggerGen(setup =>
+        builder.Services.AddSwaggerGen(options =>
         {
             var jwtSecurityScheme = new OpenApiSecurityScheme
             {
@@ -96,13 +94,12 @@ public static class BuilderExtensions
                 }
             };
         
-            setup.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+            options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
         
-            setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 { jwtSecurityScheme, Array.Empty<string>() }
             });
-        
         });
     }
 
