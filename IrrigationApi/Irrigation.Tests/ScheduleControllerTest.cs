@@ -38,13 +38,16 @@ public class ScheduleControllerTest
         Assert.Equal(200, statusCode);
     }
     
-    private List<Schedule> GetSchedules()
+    private static List<Schedule> GetSchedules()
     {
-        return
-        [
-            new Schedule { Id = 1, StartTime = new DateTime(2024, 06, 22, 10, 15, 00), EndTime = new DateTime(2024, 06, 22, 11, 25, 00) },
-            new Schedule { Id = 2, StartTime = new DateTime(2024, 06, 23, 14, 35, 00), EndTime = new DateTime(2024, 06, 23, 15, 35, 00) },
-            new Schedule { Id = 3, StartTime = new DateTime(2024, 06, 24, 20, 10, 00), EndTime = new DateTime(2024, 06, 24, 22, 20, 00) }
-        ];
+        var datas = new List<Schedule>();
+        for (var i = 1; i < 4; i++)
+            datas.Add(new Schedule
+            {
+                Id = i, 
+                StartTime = new DateTime(2024, 06, i, 1+i, i*2, 00), 
+                EndTime = new DateTime(2024, 06, i, 1+i, i*2, 00)
+            });
+        return datas;
     }
 }
