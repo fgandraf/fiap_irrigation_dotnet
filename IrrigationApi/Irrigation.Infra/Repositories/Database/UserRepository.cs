@@ -1,5 +1,5 @@
 using Irrigation.Core;
-using Irrigation.Core.Contracts;
+using Irrigation.Core.Contracts.Repositories;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels.Create;
 using Irrigation.Core.ViewModels.Update;
@@ -30,7 +30,7 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
     }
 
 
-    public async Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize)
+    public async Task<OperationResult<ListView>> GetAllAsync(int page, int pageSize)
     {
         var count = await context.Users.AsNoTracking().CountAsync();
 
@@ -51,15 +51,11 @@ public class UserRepository(IrrigationDataContext context) : IUserRepository
             .ToListAsync();
 
         if (users.Count == 0)
-            return OperationResult<dynamic>.FailureResult();
+            return OperationResult<ListView>.FailureResult();
         
-        return OperationResult<dynamic>.SuccessResult(new
-        {
-            total = count,
-            page,
-            pageSize,
-            users
-        });
+        return OperationResult<ListView>.SuccessResult(new ListView(
+            Total: count, Page: page, PageSize:pageSize, Content: users)
+        );
     }
 
     public async Task<OperationResult<UserView>> GetByEmailAsync(string address)

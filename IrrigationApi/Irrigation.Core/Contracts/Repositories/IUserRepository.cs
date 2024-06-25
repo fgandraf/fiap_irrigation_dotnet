@@ -3,12 +3,12 @@ using Irrigation.Core.ViewModels.Create;
 using Irrigation.Core.ViewModels.Update;
 using Irrigation.Core.ViewModels.View;
 
-namespace Irrigation.Core.Contracts;
+namespace Irrigation.Core.Contracts.Repositories;
 
 public interface IUserRepository
 {
     Task<OperationResult<User>> GetByLoginAsync(UserLoginView model);
-    Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize);
+    Task<OperationResult<ListView>> GetAllAsync(int page, int pageSize);
     Task<OperationResult<UserView>> GetByEmailAsync(string address);
     Task<OperationResult<UserView>> GetByIdAsync(int id);
     Task<OperationResult<int>> InsertAsync(UserCreate model);

@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Irrigation.Core;
-using Irrigation.Core.Contracts;
+using Irrigation.Core.Contracts.Services;
 using Irrigation.Core.Models;
 using Microsoft.IdentityModel.Tokens;
 

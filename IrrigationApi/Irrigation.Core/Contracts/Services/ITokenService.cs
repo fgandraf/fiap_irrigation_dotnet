@@ -1,6 +1,6 @@
 using Irrigation.Core.Models;
 
-namespace Irrigation.Core.Contracts;
+namespace Irrigation.Core.Contracts.Services;
 
 public interface ITokenService
 {

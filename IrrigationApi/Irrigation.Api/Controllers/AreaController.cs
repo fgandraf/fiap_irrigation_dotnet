@@ -1,5 +1,5 @@
 using Asp.Versioning;
-using Irrigation.Core.Contracts;
+using Irrigation.Core.Contracts.Repositories;
 using Irrigation.Core.ViewModels.Create;
 using Irrigation.Core.ViewModels.Update;
 using Microsoft.AspNetCore.Authorization;

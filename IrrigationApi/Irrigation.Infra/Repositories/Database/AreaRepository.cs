@@ -1,5 +1,5 @@
 using Irrigation.Core;
-using Irrigation.Core.Contracts;
+using Irrigation.Core.Contracts.Repositories;
 using Irrigation.Core.Models;
 using Irrigation.Core.ViewModels.Create;
 using Irrigation.Core.ViewModels.Update;
@@ -11,7 +11,7 @@ namespace Irrigation.Infra.Repositories.Database;
 
 public class AreaRepository(IrrigationDataContext context) : IAreaRepository
 {
-    public async Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize)
+    public async Task<OperationResult<ListView>> GetAllAsync(int page, int pageSize)
     {
         var count = await context.Areas.AsNoTracking().CountAsync();
         
@@ -33,15 +33,11 @@ public class AreaRepository(IrrigationDataContext context) : IAreaRepository
             .ToListAsync();
 
         if (areas.Count == 0)
-            return OperationResult<dynamic>.FailureResult();
+            return OperationResult<ListView>.FailureResult();
         
-        return OperationResult<dynamic>.SuccessResult(new
-        {
-            total = count,
-            page,
-            pageSize,
-            areas
-        });
+        return OperationResult<ListView>.SuccessResult(new ListView(
+            Total: count, Page: page, PageSize:pageSize, Content: areas)
+        );
     }
     
     public async Task<OperationResult<AreaView>> GetByIdAsync(int id)

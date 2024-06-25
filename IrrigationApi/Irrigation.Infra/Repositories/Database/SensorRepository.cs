@@ -1,7 +1,6 @@
 using Irrigation.Core;
-using Irrigation.Core.Contracts;
+using Irrigation.Core.Contracts.Repositories;
 using Irrigation.Core.Models;
-using Irrigation.Core.ViewModels;
 using Irrigation.Core.ViewModels.Create;
 using Irrigation.Core.ViewModels.Update;
 using Irrigation.Core.ViewModels.View;
@@ -12,7 +11,7 @@ namespace Irrigation.Infra.Repositories.Database;
 
 public class SensorRepository(IrrigationDataContext context) : ISensorRepository
 {
-    public async Task<OperationResult<dynamic>> GetAllAsync(int page, int pageSize)
+    public async Task<OperationResult<ListView>> GetAllAsync(int page, int pageSize)
     {
         var count = await context.Sensors.AsNoTracking().CountAsync();
         
@@ -37,15 +36,11 @@ public class SensorRepository(IrrigationDataContext context) : ISensorRepository
             .ToListAsync();
 
         if (sensors.Count == 0)
-            return OperationResult<dynamic>.FailureResult();
+            return OperationResult<ListView>.FailureResult();
         
-        return OperationResult<dynamic>.SuccessResult(new
-        {
-            total = count,
-            page,
-            pageSize,
-            sensors
-        });
+        return OperationResult<ListView>.SuccessResult(new ListView(
+            Total: count, Page: page, PageSize:pageSize, Content: sensors)
+        );
     }
     
     public async Task<OperationResult<SensorView>> GetByIdAsync(int id)
