@@ -9,6 +9,7 @@ builder.AddJwtAuthentication();
 builder.AddAuthorizationPolicies();
 builder.AddSwaggerConfigurations();
 builder.JsonIgnoreCycles();
+builder.AddVersionControls();
 
 var app = builder.Build();
 

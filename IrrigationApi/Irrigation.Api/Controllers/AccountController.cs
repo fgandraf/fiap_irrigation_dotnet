@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.ViewModels.Create;
 using Irrigation.Core.ViewModels.Update;
@@ -8,10 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("v1/accounts")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion(1)]
 public class AccountController(ITokenService tokenService, IUserRepository repository) : ControllerBase
 {
     [AllowAnonymous]
+    [MapToApiVersion(1)]
     [HttpPost("login")]
     public IActionResult GetByLogin([FromBody]UserLoginView model)
     {
@@ -20,6 +23,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     }
     
     [AllowAnonymous]
+    [MapToApiVersion(1)]
     [HttpPost("register")]
     public IActionResult Register([FromBody]UserCreate model)
     {
@@ -28,6 +32,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     }
     
     [Authorize(Roles = "admin, user")]
+    [MapToApiVersion(1)]
     [HttpGet]
     public IActionResult GetAll(
         [FromQuery]int page = 0, 
@@ -38,6 +43,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     }
     
     [Authorize(Roles = "admin, user")]
+    [MapToApiVersion(1)]
     [HttpGet("email/{email}")]
     public IActionResult GetByEmail(string email)
     {
@@ -46,6 +52,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     }
     
     [Authorize(Roles = "admin, user")]
+    [MapToApiVersion(1)]
     [HttpGet("id/{id}")]
     public IActionResult GetById(int id)
     {
@@ -54,6 +61,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     }
     
     [Authorize(Roles = "admin, user")]
+    [MapToApiVersion(1)]
     [HttpPut]
     public IActionResult Update([FromBody]UserUpdateInfo model)
     {
@@ -62,6 +70,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     }
     
     [Authorize(Roles = "admin")]
+    [MapToApiVersion(1)]
     [HttpPut("activate/{id}")]
     public IActionResult Activate(int id)
     {
@@ -70,6 +79,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     }
     
     [Authorize(Roles = "admin")]
+    [MapToApiVersion(1)]
     [HttpPut("deactivate/{id}")]
     public IActionResult Deactivate(int id)
     {
@@ -78,6 +88,7 @@ public class AccountController(ITokenService tokenService, IUserRepository repos
     }
     
     [Authorize(Roles = "admin")]
+    [MapToApiVersion(1)]
     [HttpPut("permission/{userId},{roleId}")]
     public IActionResult ChangePermission(int userId, int roleId)
     {

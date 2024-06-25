@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using Asp.Versioning;
 using Irrigation.Api.Services;
 using Irrigation.Core;
 using Irrigation.Core.Contracts;
@@ -109,5 +110,19 @@ public static class BuilderExtensions
     {
         builder.Services.AddControllers().AddJsonOptions(options => 
             options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+    }
+
+    public static void AddVersionControls(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+            options.ApiVersionReader = ApiVersionReader.Combine(
+                new QueryStringApiVersionReader("api-version"),
+                new HeaderApiVersionReader("x-api-version"),
+                new MediaTypeApiVersionReader("ver"));
+        });
     }
 }

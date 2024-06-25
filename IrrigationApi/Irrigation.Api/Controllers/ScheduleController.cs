@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Irrigation.Core.Contracts;
 using Irrigation.Core.ViewModels.Create;
 using Irrigation.Core.ViewModels.Update;
@@ -7,10 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace Irrigation.Api.Controllers;
 
 [ApiController]
-[Route("v1/schedules")]
+[Route("api/v{version:apiVersion}/[controller]")]
+[ApiVersion(1)]
 public class ScheduleController(IScheduleRepository repository): ControllerBase
 {
     [Authorize(Roles = "admin")]
+    [MapToApiVersion(1)]
     [HttpPost]
     public IActionResult Create([FromBody]ScheduleCreate model)
     {
@@ -19,6 +22,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     }
     
     [Authorize(Roles = "admin")]
+    [MapToApiVersion(1)]
     [HttpPut]
     public IActionResult Update([FromBody]ScheduleUpdate model)
     {
@@ -27,6 +31,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     }
     
     [Authorize(Roles = "admin, user")]
+    [MapToApiVersion(1)]
     [HttpGet("id/{id}")]
     public IActionResult GetById(int id)
     {
@@ -35,6 +40,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     }
     
     [Authorize(Roles = "admin, user")]
+    [MapToApiVersion(1)]
     [HttpGet]
     public IActionResult GetAll(
         [FromQuery]int page = 0, 
@@ -45,6 +51,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     }
 
     [Authorize(Roles = "admin")]
+    [MapToApiVersion(1)]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
