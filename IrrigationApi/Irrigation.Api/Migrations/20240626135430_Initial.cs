@@ -15,11 +15,11 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_area",
                 columns: table => new
                 {
-                    area_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    area_size = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    area_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    description = table.Column<string>(type: "TEXT", nullable: true),
+                    location = table.Column<string>(type: "TEXT", nullable: true),
+                    area_size = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,9 +30,9 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_role",
                 columns: table => new
                 {
-                    role_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "VARCHAR(30)", maxLength: 30, nullable: true)
+                    role_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    name = table.Column<string>(type: "VARCHAR", maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,10 +43,10 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_schedule",
                 columns: table => new
                 {
-                    schedule_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    start_time = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    end_time = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    schedule_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    start_time = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    end_time = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,11 +57,11 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_user",
                 columns: table => new
                 {
-                    user_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "NVARCHAR(100)", maxLength: 100, nullable: false),
-                    email = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
-                    password_hash = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: false),
+                    user_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    name = table.Column<string>(type: "NVARCHAR", maxLength: 100, nullable: false),
+                    email = table.Column<string>(type: "NVARCHAR", maxLength: 50, nullable: false),
+                    password_hash = table.Column<string>(type: "NVARCHAR", maxLength: 255, nullable: false),
                     active = table.Column<bool>(type: "BIT", nullable: false)
                 },
                 constraints: table =>
@@ -73,11 +73,11 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_sensor",
                 columns: table => new
                 {
-                    sensor_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    type = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    area_id = table.Column<int>(type: "int", nullable: true)
+                    sensor_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    type = table.Column<string>(type: "TEXT", nullable: true),
+                    location = table.Column<string>(type: "TEXT", nullable: true),
+                    area_id = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -93,8 +93,8 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_user_role",
                 columns: table => new
                 {
-                    role_id = table.Column<int>(type: "int", nullable: false),
-                    user_id = table.Column<int>(type: "int", nullable: false)
+                    role_id = table.Column<int>(type: "INTEGER", nullable: false),
+                    user_id = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,11 +117,11 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_notification",
                 columns: table => new
                 {
-                    notification_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    sensor_id = table.Column<int>(type: "int", nullable: true)
+                    notification_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    description = table.Column<string>(type: "TEXT", nullable: true),
+                    timestamp = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    sensor_id = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,13 +137,13 @@ namespace Irrigation.Api.Migrations
                 name: "tbl_weather",
                 columns: table => new
                 {
-                    weather_id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    temperature = table.Column<int>(type: "int", nullable: false),
-                    humidity = table.Column<int>(type: "int", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    sensor_id = table.Column<int>(type: "int", nullable: true)
+                    weather_id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    timestamp = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    temperature = table.Column<int>(type: "INTEGER", nullable: false),
+                    humidity = table.Column<int>(type: "INTEGER", nullable: false),
+                    description = table.Column<string>(type: "TEXT", nullable: true),
+                    sensor_id = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {

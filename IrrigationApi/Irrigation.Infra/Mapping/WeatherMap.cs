@@ -16,7 +16,7 @@ public class WeatherMap : IEntityTypeConfiguration<Weather>
          builder.Property(x => x.Id)
              .HasColumnName("weather_id")
              .ValueGeneratedOnAdd()
-             .UseIdentityColumn();
+             .ValueGeneratedOnAdd();
          
          //// Properties
          builder.Property(x => x.Timestamp)

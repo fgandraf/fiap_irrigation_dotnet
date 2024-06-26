@@ -18,7 +18,7 @@ public class NotificationController(INotificationRepository repository): Control
     public IActionResult Create([FromBody]NotificationCreate model)
     {
         var result = repository.InsertAsync(model).Result;
-        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : BadRequest(result.Message);
+        return result.Success ? CreatedAtAction(nameof(GetById), new { version = "1", id = result.Value }, new { id = result.Value }) : BadRequest(result.Message);
     }
     
     [Authorize(Roles = "admin")]

@@ -18,7 +18,7 @@ public class ScheduleController(IScheduleRepository repository): ControllerBase
     public IActionResult Create([FromBody]ScheduleCreate model)
     {
         var result = repository.InsertAsync(model).Result;
-        return result.Success ? CreatedAtAction(nameof(GetById), new { id = result.Value }, new { id = result.Value }) : BadRequest(result.Message);
+        return result.Success ? CreatedAtAction(nameof(GetById), new { version = "1", id = result.Value }, new { id = result.Value }) : BadRequest(result.Message);
     }
     
     [Authorize(Roles = "admin")]

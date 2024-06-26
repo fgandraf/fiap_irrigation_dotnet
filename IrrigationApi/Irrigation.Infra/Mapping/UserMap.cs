@@ -16,7 +16,7 @@ public class UserMap: IEntityTypeConfiguration<User>
         builder.Property(x => x.Id)
             .HasColumnName("user_id")
             .ValueGeneratedOnAdd()
-            .UseIdentityColumn();
+            .ValueGeneratedOnAdd();
         
         //// Properties
         builder.Property(x => x.Name)

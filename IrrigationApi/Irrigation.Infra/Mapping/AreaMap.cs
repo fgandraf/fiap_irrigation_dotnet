@@ -16,7 +16,7 @@ public class AreaMap: IEntityTypeConfiguration<Area>
         builder.Property(x => x.Id)
             .HasColumnName("area_id")
             .ValueGeneratedOnAdd()
-            .UseIdentityColumn();
+            .ValueGeneratedOnAdd();
         
         //// Properties
         builder.Property(x => x.Description)

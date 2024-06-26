@@ -16,7 +16,7 @@ public class SensorMap: IEntityTypeConfiguration<Sensor>
              builder.Property(x => x.Id)
                  .HasColumnName("sensor_id")
                  .ValueGeneratedOnAdd()
-                 .UseIdentityColumn();
+                 .ValueGeneratedOnAdd();
              
             //// Properties
             builder.Property(x => x.Type)

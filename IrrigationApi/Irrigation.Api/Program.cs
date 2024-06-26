@@ -3,6 +3,7 @@ global using Irrigation.Api.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddConfigurationKeys();
+builder.UsePort5001();
 builder.AddDatabase();
 builder.AddDependenciesInjection();
 builder.AddJwtAuthentication();

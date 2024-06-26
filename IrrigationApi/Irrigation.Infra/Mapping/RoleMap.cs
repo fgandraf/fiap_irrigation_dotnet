@@ -16,7 +16,7 @@ public class RoleMap : IEntityTypeConfiguration<Role>
         builder.Property(x => x.Id)
             .HasColumnName("role_id")
             .ValueGeneratedOnAdd()
-            .UseIdentityColumn();
+            .ValueGeneratedOnAdd();
         
         //// Properties
         builder.Property(x => x.Name)

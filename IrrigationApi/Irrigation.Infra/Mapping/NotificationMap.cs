@@ -16,7 +16,7 @@ public class NotificationMap: IEntityTypeConfiguration<Notification>
         builder.Property(x => x.Id)
             .HasColumnName("notification_id")
             .ValueGeneratedOnAdd()
-            .UseIdentityColumn();
+            .ValueGeneratedOnAdd();
         
         //// Properties
         builder.Property(x => x.Description)

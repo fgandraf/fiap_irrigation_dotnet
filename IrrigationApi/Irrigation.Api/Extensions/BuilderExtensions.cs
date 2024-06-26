@@ -22,10 +22,14 @@ public static class BuilderExtensions
         Configuration.JwtPrivateKey = builder.Configuration.GetSection("Secrets").GetValue<string>("JwtPrivateKey") ?? string.Empty;
     }
 
+    public static void UsePort5001(this WebApplicationBuilder builder)
+        => builder.WebHost.UseKestrel(options => options.ListenAnyIP(5001));
+    
+
     public static void AddDatabase(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<IrrigationDataContext>(options =>
-            options.UseSqlServer(
+            options.UseSqlite(
                 Configuration.ConnectionString,
                 b => b.MigrationsAssembly("Irrigation.Api")
             )

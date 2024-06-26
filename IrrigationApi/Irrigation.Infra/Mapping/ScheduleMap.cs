@@ -16,7 +16,7 @@ public class ScheduleMap: IEntityTypeConfiguration<Schedule>
         builder.Property(x => x.Id)
             .HasColumnName("schedule_id")
             .ValueGeneratedOnAdd()
-            .UseIdentityColumn();
+            .ValueGeneratedOnAdd();
         
         //// Properties
         builder.Property(x => x.StartTime)
